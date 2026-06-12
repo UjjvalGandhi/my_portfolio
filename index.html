@@ -101,19 +101,20 @@
            HERO — EDITORIAL SPLIT
         ══════════════════════════ */
         #hero {
-            min-height: 100vh;
+            min-height: 92vh;
             display: grid;
             grid-template-columns: 1fr auto;
+            grid-template-rows: 1fr auto;
             position: relative;
             padding-top: 0;
         }
 
         .hero-left {
             background: var(--bg);
-            padding: 7rem 3rem 3rem;
+            padding: 6.5rem 3rem 2.5rem;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            justify-content: flex-start;
             position: relative;
             overflow: hidden;
         }
@@ -160,16 +161,14 @@
 
         .hero-mid {
             display: flex;
-            align-items: flex-end;
-            justify-content: space-between;
-            gap: 2rem;
-            flex-wrap: wrap;
-            margin-top: 2.5rem;
+            flex-direction: column;
+            gap: 1.2rem;
+            margin-top: 2rem;
             animation: fadeUp .8s .4s both;
         }
 
         .hero-desc {
-            max-width: 280px;
+            max-width: 340px;
             font-size: .92rem;
             line-height: 1.7;
             color: var(--ink2);
@@ -325,7 +324,7 @@
         ══════════════════════════ */
         .sec {
             max-width: 1100px; margin: 0 auto;
-            padding: 6rem 3rem;
+            padding: 4.5rem 3rem;
             position: relative; z-index: 2;
         }
 
