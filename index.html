@@ -18,23 +18,23 @@
         }
 
         :root {
-            --bg: #07070f;
-            --bg2: #11111f;
-            --c1: #2de2ff;
-            /* electric cyan */
-            --c2: #9b6dff;
-            /* vivid violet */
-            --c3: #ff7a4d;
-            /* warm coral */
-            --c4: #34e9b0;
-            /* mint */
-            --c5: #ff5fa2;
-            /* rose */
-            --text: #f1f1fa;
-            --text2: #8585b3;
-            --text3: #2d2d48;
-            --border: rgba(255, 255, 255, 0.08);
-            --grad: linear-gradient(120deg, var(--c1), var(--c2) 55%, var(--c5));
+            --bg: #0e0704;
+            --bg2: #1a0d07;
+            --c1: #E35336;
+            /* tomato red */
+            --c2: #F4A460;
+            /* sandy brown */
+            --c3: #A0522D;
+            /* sienna */
+            --c4: #F5F5DC;
+            /* beige */
+            --c5: #E35336;
+            /* tomato red */
+            --text: #F5F5DC;
+            --text2: #c4956a;
+            --text3: #4a2010;
+            --border: rgba(244, 164, 96, 0.12);
+            --grad: linear-gradient(120deg, var(--c1), var(--c2) 55%, var(--c3));
         }
 
         html {
@@ -58,10 +58,10 @@
             filter: blur(70px) saturate(1.25);
             opacity: .55;
             background:
-                radial-gradient(38vw 38vw at 18% 22%, rgba(45, 226, 255, .30), transparent 60%),
-                radial-gradient(34vw 34vw at 82% 28%, rgba(155, 109, 255, .28), transparent 62%),
-                radial-gradient(40vw 40vw at 70% 82%, rgba(255, 95, 162, .22), transparent 60%),
-                radial-gradient(32vw 32vw at 25% 80%, rgba(52, 233, 176, .18), transparent 62%);
+                radial-gradient(38vw 38vw at 18% 22%, rgba(227, 83, 54, .30), transparent 60%),
+                radial-gradient(34vw 34vw at 82% 28%, rgba(244, 164, 96, .28), transparent 62%),
+                radial-gradient(40vw 40vw at 70% 82%, rgba(160, 82, 45, .22), transparent 60%),
+                radial-gradient(32vw 32vw at 25% 80%, rgba(245, 245, 220, .10), transparent 62%);
             animation: auroraDrift 24s ease-in-out infinite alternate;
         }
 
@@ -102,7 +102,7 @@
         #cur-ring {
             width: 36px;
             height: 36px;
-            border: 1px solid rgba(45, 226, 255, .35);
+            border: 1px solid rgba(227, 83, 54, .35);
             border-radius: 50%;
             position: fixed;
             pointer-events: none;
@@ -154,7 +154,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            background: rgba(6, 6, 10, .8);
+            background: rgba(10, 4, 2, .85);
             backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--border);
         }
@@ -166,7 +166,7 @@
             color: var(--c1);
             text-decoration: none;
             cursor: none;
-            text-shadow: 0 0 24px rgba(45, 226, 255, .4);
+            text-shadow: 0 0 24px rgba(227, 83, 54, .4);
         }
 
         .nav-r {
@@ -199,7 +199,7 @@
         .nav-hire {
             padding: .55rem 1.4rem;
             background: var(--grad);
-            color: #07070f;
+            color: #0e0704;
             font-size: .78rem;
             font-weight: 700;
             letter-spacing: .08em;
@@ -212,7 +212,7 @@
         }
 
         .nav-hire:hover {
-            box-shadow: 0 0 30px rgba(45, 226, 255, .4);
+            box-shadow: 0 0 30px rgba(227, 83, 54, .4);
             transform: translateY(-1px);
         }
 
@@ -238,8 +238,8 @@
             display: inline-flex;
             align-items: center;
             gap: .6rem;
-            border: 1px solid rgba(45, 226, 255, .25);
-            background: rgba(45, 226, 255, .05);
+            border: 1px solid rgba(227, 83, 54, .25);
+            background: rgba(227, 83, 54, .07);
             padding: .5rem 1.25rem;
             border-radius: 99px;
             margin-bottom: 2.5rem;
@@ -268,7 +268,7 @@
             }
 
             50% {
-                box-shadow: 0 0 18px var(--c1), 0 0 30px rgba(45, 226, 255, .3);
+                box-shadow: 0 0 18px var(--c1), 0 0 30px rgba(227, 83, 54, .3);
             }
         }
 
@@ -281,7 +281,7 @@
         .flutter-logo-svg {
             width: 80px;
             height: 80px;
-            filter: drop-shadow(0 0 24px rgba(45, 226, 255, .5));
+            filter: drop-shadow(0 0 24px rgba(227, 83, 54, .5));
         }
 
         .hero-name {
@@ -303,7 +303,7 @@
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            filter: drop-shadow(0 6px 30px rgba(45, 226, 255, .25));
+            filter: drop-shadow(0 6px 30px rgba(227, 83, 54, .25));
         }
 
         .hero-title {
@@ -346,8 +346,8 @@
         }
 
         .plat:hover {
-            border-color: var(--c1);
-            color: var(--c1);
+            border-color: var(--c2);
+            color: var(--c2);
         }
 
         .plat-icon {
@@ -365,7 +365,7 @@
         .btn-p {
             padding: .85rem 2.25rem;
             background: var(--grad);
-            color: #07070f;
+            color: #0e0704;
             font-family: 'Plus Jakarta Sans', sans-serif;
             font-size: .88rem;
             font-weight: 800;
@@ -391,7 +391,7 @@
 
         .btn-p:hover {
             transform: translateY(-2px);
-            box-shadow: 0 14px 40px rgba(45, 226, 255, .35);
+            box-shadow: 0 14px 40px rgba(227, 83, 54, .35);
         }
 
         .btn-p:hover::before {
@@ -590,13 +590,13 @@
             content: '';
             position: absolute;
             inset: 0;
-            background: radial-gradient(circle at 50% 100%, rgba(45, 226, 255, .08), transparent 70%);
+            background: radial-gradient(circle at 50% 100%, rgba(227, 83, 54, .10), transparent 70%);
             opacity: 0;
             transition: opacity .3s;
         }
 
         .sk-tile:hover {
-            background: #111120;
+            background: #221008;
         }
 
         .sk-tile:hover::after {
@@ -642,7 +642,7 @@
         }
 
         .exp-card:hover {
-            border-color: rgba(45, 226, 255, .18);
+            border-color: rgba(227, 83, 54, .25);
             transform: translateX(5px);
         }
 
@@ -716,7 +716,7 @@
             height: 5px;
             border-radius: 50%;
             background: var(--c1);
-            box-shadow: 0 0 8px rgba(45, 226, 255, .5);
+            box-shadow: 0 0 8px rgba(227, 83, 54, .5);
         }
 
         /* ═══════════════════════════════
@@ -753,7 +753,7 @@
 
         .proj-card:hover {
             transform: translateY(-5px);
-            border-color: rgba(45, 226, 255, .2);
+            border-color: rgba(227, 83, 54, .25);
             box-shadow: 0 20px 50px rgba(0, 0, 0, .4);
         }
 
@@ -807,33 +807,33 @@
         }
 
         .pt-c {
-            background: rgba(45, 226, 255, .08);
+            background: rgba(227, 83, 54, .10);
             color: var(--c1);
-            border: 1px solid rgba(45, 226, 255, .15);
+            border: 1px solid rgba(227, 83, 54, .20);
         }
 
         .pt-p {
-            background: rgba(155, 109, 255, .1);
-            color: #b49eff;
-            border: 1px solid rgba(155, 109, 255, .2);
+            background: rgba(244, 164, 96, .10);
+            color: var(--c2);
+            border: 1px solid rgba(244, 164, 96, .20);
         }
 
         .pt-o {
-            background: rgba(255, 122, 77, .08);
-            color: var(--c3);
-            border: 1px solid rgba(255, 122, 77, .15);
+            background: rgba(160, 82, 45, .10);
+            color: #c8784a;
+            border: 1px solid rgba(160, 82, 45, .20);
         }
 
         .pt-g {
-            background: rgba(52, 211, 153, .08);
-            color: #34d399;
-            border: 1px solid rgba(52, 211, 153, .15);
+            background: rgba(245, 245, 220, .07);
+            color: #d4c9a0;
+            border: 1px solid rgba(245, 245, 220, .12);
         }
 
         .pt-y {
-            background: rgba(255, 214, 10, .07);
-            color: #fbbf24;
-            border: 1px solid rgba(255, 214, 10, .15);
+            background: rgba(244, 164, 96, .08);
+            color: #e8a050;
+            border: 1px solid rgba(244, 164, 96, .15);
         }
 
         /* ═══════════════════════════════
@@ -858,7 +858,7 @@
             width: 400px;
             height: 400px;
             border-radius: 50%;
-            background: radial-gradient(circle, rgba(45, 226, 255, .05), rgba(155, 109, 255, .04), transparent 70%);
+            background: radial-gradient(circle, rgba(227, 83, 54, .07), rgba(244, 164, 96, .04), transparent 70%);
             pointer-events: none;
         }
 
@@ -905,19 +905,19 @@
         .ct-btn:hover {
             border-color: var(--c1);
             color: var(--c1);
-            background: rgba(45, 226, 255, .04);
+            background: rgba(227, 83, 54, .06);
             transform: translateY(-2px);
         }
 
         .ct-btn-live {
-            border-color: rgba(45, 226, 255, .4);
+            border-color: rgba(227, 83, 54, .4);
             color: var(--c1);
-            background: rgba(45, 226, 255, .06);
+            background: rgba(227, 83, 54, .08);
             font-weight: 700;
         }
 
         .ct-btn-live:hover {
-            box-shadow: 0 10px 30px rgba(45, 226, 255, .25);
+            box-shadow: 0 10px 30px rgba(227, 83, 54, .25);
         }
 
         footer {
@@ -1053,10 +1053,10 @@
             <!-- Flutter logo SVG — unmistakable identity -->
             <div class="flutter-logo-wrap">
                 <svg class="flutter-logo-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                    <polygon points="22,56 50,28 78,28 50,56" fill="#2de2ff" opacity="0.9" />
-                    <polygon points="22,56 50,84 78,84 50,56" fill="#22b8e0" opacity="0.7" />
-                    <polygon points="50,56 78,28 78,56" fill="#2de2ff" opacity="0.5" />
-                    <polygon points="50,56 78,84 78,56" fill="#1d8fb0" opacity="0.6" />
+                    <polygon points="22,56 50,28 78,28 50,56" fill="#E35336" opacity="0.9" />
+                    <polygon points="22,56 50,84 78,84 50,56" fill="#F4A460" opacity="0.75" />
+                    <polygon points="50,56 78,28 78,56" fill="#E35336" opacity="0.5" />
+                    <polygon points="50,56 78,84 78,56" fill="#A0522D" opacity="0.7" />
                 </svg>
             </div>
 
@@ -1268,7 +1268,7 @@
         const init = () => {
             pts = [];
             for (let i = 0; i < Math.floor(W * H / 20000); i++) {
-                pts.push({ x: Math.random() * W, y: Math.random() * H, vx: (Math.random() - .5) * .25, vy: (Math.random() - .5) * .25, r: Math.random() * 1.2 + .3, col: Math.random() > .5 ? '45,226,255' : '155,109,255' });
+                pts.push({ x: Math.random() * W, y: Math.random() * H, vx: (Math.random() - .5) * .25, vy: (Math.random() - .5) * .25, r: Math.random() * 1.2 + .3, col: Math.random() > .5 ? '227,83,54' : '244,164,96' });
             }
         };
         init();
@@ -1284,7 +1284,7 @@
                     const q = pts[j], dx = p.x - q.x, dy = p.y - q.y, d = Math.hypot(dx, dy);
                     if (d < 130) {
                         c.beginPath(); c.moveTo(p.x, p.y); c.lineTo(q.x, q.y);
-                        c.strokeStyle = `rgba(45,226,255,${(1 - d / 130) * .1})`; c.lineWidth = .5; c.stroke();
+                        c.strokeStyle = `rgba(227,83,54,${(1 - d / 130) * .1})`; c.lineWidth = .5; c.stroke();
                     }
                 }
             });
