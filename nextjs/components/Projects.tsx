@@ -20,13 +20,13 @@ const Tag = ({ label, type }: { label: string; type: string }) => (
 const projects = [
   {
     num: "01", icon: <FaPlaceOfWorship size={32} color="#A0522D" />,
-    name: "Parabhakti",
+    name: "CrowdTrack",
     desc: "Temple meal tracking across multiple states with real-time admin notifications.",
     tags: [["Flutter","r"],["Firebase","s"],["Multi-state","b"]],
   },
   {
     num: "02", icon: <MdInventory2 size={32} color="#E35336" />,
-    name: "AVD Kitchen",
+    name: "StockStoreSync",
     desc: "Inventory management with category & godown-wise tracking + FCM push alerts.",
     tags: [["Flutter","r"],["FCM","s"],["Inventory","k"]],
   },
