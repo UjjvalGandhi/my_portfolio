@@ -67,8 +67,8 @@ export default function Hero() {
         <div style={{ position:"absolute", inset:0, background:"radial-gradient(60% 60% at 30% 30%, rgba(227,83,54,.25), transparent), radial-gradient(50% 50% at 80% 80%, rgba(160,82,45,.3), transparent)" }} />
         <span style={{ position:"absolute", top:"1rem", right:"1.5rem", fontFamily:"var(--font-barlow)", fontWeight:900, fontSize:"7rem", color:"rgba(28,10,4,.07)", lineHeight:1, pointerEvents:"none" }}>01</span>
 
-        <div className="hero-right-tag" style={{ position:"relative", zIndex:1, textAlign:"center" }}>
-          <SiFlutter size={90} color="#54C5F8" style={{ marginBottom:"1.2rem", filter:"drop-shadow(0 8px 28px rgba(84,197,248,.45))" }} />
+        <div className="hero-right-tag" style={{ position:"relative", zIndex:1, display:"flex", flexDirection:"column", alignItems:"center", textAlign:"center" }}>
+          <SiFlutter size={90} color="#54C5F8" style={{ marginBottom:"1.2rem", filter:"drop-shadow(0 8px 28px rgba(84,197,248,.45))", display:"block" }} />
           <div style={{ fontFamily:"var(--font-barlow)", fontWeight:800, fontSize:"clamp(1.4rem,2.5vw,2.2rem)", letterSpacing:".04em", color:"var(--ink)", lineHeight:1.1 }}>1+ Year<br />Flutter Dev</div>
           <div style={{ fontSize:".75rem", fontWeight:500, color:"var(--ink2)", marginTop:".5rem", letterSpacing:".06em" }}>Anand, Gujarat · Remote OK</div>
         </div>
