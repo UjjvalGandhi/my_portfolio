@@ -1,6 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
-import { SiAndroid, SiFlutter } from "react-icons/si";
+import { SiAndroid } from "react-icons/si";
 import { FaApple, FaDesktop, FaGlobe } from "react-icons/fa";
 
 const fadeUp = (delay = 0) => ({
@@ -68,7 +68,18 @@ export default function Hero() {
         <span style={{ position:"absolute", top:"1rem", right:"1.5rem", fontFamily:"var(--font-barlow)", fontWeight:900, fontSize:"7rem", color:"rgba(28,10,4,.07)", lineHeight:1, pointerEvents:"none" }}>01</span>
 
         <div className="hero-right-tag" style={{ position:"relative", zIndex:1, display:"flex", flexDirection:"column", alignItems:"center", textAlign:"center" }}>
-          <SiFlutter size={90} color="#54C5F8" style={{ marginBottom:"1.2rem", filter:"drop-shadow(0 6px 20px rgba(1,87,155,.35))", display:"block" }} />
+          {/* Flutter logo — custom SVG, no background box */}
+          <svg width="92" height="92" viewBox="0 0 100 124" xmlns="http://www.w3.org/2000/svg"
+            style={{ display:"block", marginBottom:"1.2rem", filter:"drop-shadow(0 8px 24px rgba(1,87,155,.35))" }}>
+            {/* upper chevron — light blue */}
+            <polygon points="14,55 50,19 86,55 68,73 50,55 32,73" fill="#54C5F8"/>
+            {/* middle diamond — medium blue */}
+            <polygon points="32,73 50,55 68,73 50,91" fill="#29B6F6"/>
+            {/* lower body — dark blue */}
+            <polygon points="50,91 68,73 86,91 68,109 50,109" fill="#01579B"/>
+            {/* shadow sliver */}
+            <polygon points="50,91 68,91 68,109 50,109" fill="#014f99" opacity="0.6"/>
+          </svg>
           <div style={{ fontFamily:"var(--font-barlow)", fontWeight:800, fontSize:"clamp(1.4rem,2.5vw,2.2rem)", letterSpacing:".04em", color:"var(--ink)", lineHeight:1.1 }}>1+ Year<br />Flutter Dev</div>
           <div style={{ fontSize:".75rem", fontWeight:500, color:"var(--ink2)", marginTop:".5rem", letterSpacing:".06em" }}>Anand, Gujarat · Remote OK</div>
         </div>
