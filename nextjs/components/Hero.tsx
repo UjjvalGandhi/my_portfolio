@@ -62,13 +62,13 @@ export default function Hero() {
       <motion.div className="hero-right-panel"
         initial={{ opacity:0, x:60 }} animate={{ opacity:1, x:0 }}
         transition={{ duration:0.8, delay:0.2, ease:"easeOut" }}
-        style={{ width:"34vw", background:"var(--sand)", position:"relative", overflow:"hidden", display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"flex-end", padding:"2rem" }}
+        style={{ width:"34vw", background:"var(--sand)", position:"relative", overflow:"hidden", display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", padding:"2rem" }}
       >
         <div style={{ position:"absolute", inset:0, background:"radial-gradient(60% 60% at 30% 30%, rgba(227,83,54,.25), transparent), radial-gradient(50% 50% at 80% 80%, rgba(160,82,45,.3), transparent)" }} />
         <span style={{ position:"absolute", top:"1rem", right:"1.5rem", fontFamily:"var(--font-barlow)", fontWeight:900, fontSize:"7rem", color:"rgba(28,10,4,.07)", lineHeight:1, pointerEvents:"none" }}>01</span>
 
         <div className="hero-right-tag" style={{ position:"relative", zIndex:1, textAlign:"center" }}>
-          <SiFlutter size={80} color="#E35336" style={{ marginBottom:"1.2rem", filter:"drop-shadow(0 8px 24px rgba(160,82,45,.4))" }} />
+          <SiFlutter size={90} color="#54C5F8" style={{ marginBottom:"1.2rem", filter:"drop-shadow(0 8px 28px rgba(84,197,248,.45))" }} />
           <div style={{ fontFamily:"var(--font-barlow)", fontWeight:800, fontSize:"clamp(1.4rem,2.5vw,2.2rem)", letterSpacing:".04em", color:"var(--ink)", lineHeight:1.1 }}>1+ Year<br />Flutter Dev</div>
           <div style={{ fontSize:".75rem", fontWeight:500, color:"var(--ink2)", marginTop:".5rem", letterSpacing:".06em" }}>Anand, Gujarat · Remote OK</div>
         </div>
