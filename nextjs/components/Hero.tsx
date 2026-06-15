@@ -32,7 +32,6 @@ export default function Hero() {
 
       {/* ── LEFT ── */}
       <div className="hero-left-pad" style={{ background:"var(--bg)", padding:"6.5rem 3rem 2.5rem", display:"flex", flexDirection:"column", justifyContent:"flex-start", position:"relative", overflow:"hidden" }}>
-        <div style={{ position:"absolute", right:0, top:"50%", transform:"translateY(-50%)", width:180, height:360, borderRadius:"180px 0 0 180px", background:"var(--sand)", opacity:0.18, pointerEvents:"none" }} />
 
         <motion.p {...fadeUp(0.1)} style={{ display:"inline-flex", alignItems:"center", gap:".6rem", fontSize:".72rem", fontWeight:700, letterSpacing:".18em", textTransform:"uppercase", color:"var(--red)", marginBottom:"1.5rem" }}>
           <span style={{ width:24, height:2, background:"var(--red)", display:"inline-block" }} />
@@ -72,6 +71,9 @@ export default function Hero() {
         transition={{ duration:0.8, delay:0.2, ease:"easeOut" }}
         style={{ width:"34vw", background:"transparent", position:"relative", display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", padding:"2rem" }}
       >
+        {/* half-circle backdrop, anchored to right edge, behind phones */}
+        <div style={{ position:"absolute", right:0, top:"50%", transform:"translateY(-50%)", width:260, height:520, borderRadius:"520px 0 0 520px", background:"var(--sand)", opacity:0.4, zIndex:0, pointerEvents:"none" }} />
+
         {/* ── 3D PHONE FAN ── */}
         <div className="phone-fan" style={{ position:"relative", zIndex:1, width:"100%", height:"100%", display:"flex", alignItems:"center", justifyContent:"center", perspective:"1400px" }}>
           {phones.map((p, i) => (
