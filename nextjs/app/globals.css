@@ -58,11 +58,18 @@ body {
   }
   .hero-right-panel {
     width: 100% !important;
-    height: 220px !important;
+    height: 360px !important;
     flex-direction: row !important;
     justify-content: center !important;
-    gap: 2rem !important;
-    padding: 1.5rem 2rem !important;
+    padding: 1rem !important;
+    overflow: hidden !important;
+  }
+  .phone-fan { transform: scale(0.72); }
+  .hero-circle {
+    width: 300px !important;
+    height: 600px !important;
+    border-radius: 600px 0 0 600px !important;
+    right: -40px !important;
   }
   .hero-right-tag { font-size: 1.2rem !important; text-align: left !important; }
   .hero-name-size { font-size: clamp(3.8rem, 16vw, 6rem) !important; }
@@ -86,6 +93,9 @@ body {
   .sk-grid-cols { grid-template-columns: repeat(3, 1fr) !important; }
   .sec-title-size { font-size: clamp(2.2rem, 10vw, 3.5rem) !important; }
   .cta-stack { flex-direction: column !important; width: 100% !important; }
-  .cta-stack > * { width: 100% !important; text-align: center !important; }
+  .cta-stack > * { width: 100% !important; text-align: center !important; justify-content: center !important; }
   .plat-wrap { gap: .35rem !important; }
+  .hero-right-panel { height: 320px !important; }
+  .phone-fan { transform: scale(0.62); }
+  .hero-circle { width: 260px !important; height: 520px !important; border-radius: 520px 0 0 520px !important; }
 }
