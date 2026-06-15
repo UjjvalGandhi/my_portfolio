@@ -5,9 +5,9 @@ import { FaApple, FaDesktop, FaGlobe, FaFilePdf } from "react-icons/fa";
 
 // Replace src with your real app screenshots (drop them in public/screens/)
 const phones = [
-  { src: "/screens/app2.png", alt: "App screen 1", x: -118, rot: -10, ry: -14, scale: 0.84, z: 1 },
+  { src: "/screens/app2.png", alt: "App screen 1", x: -132, rot: -10, ry: -14, scale: 0.84, z: 1 },
   { src: "/screens/app1.png", alt: "App screen 2", x: 0,    rot: 0,   ry: 0,   scale: 1,    z: 3 },
-  { src: "/screens/app3.png", alt: "App screen 3", x: 118,  rot: 10,  ry: 14,  scale: 0.84, z: 1 },
+  { src: "/screens/app3.png", alt: "App screen 3", x: 132,  rot: 10,  ry: 14,  scale: 0.84, z: 1 },
 ];
 
 const fadeUp = (delay = 0) => ({
@@ -86,7 +86,7 @@ export default function Hero() {
               }}
             >
               <div style={{
-                width:182, height:380, borderRadius:30, background:"#0e0b09",
+                width:210, height:438, borderRadius:34, background:"#0e0b09",
                 padding:7, boxShadow:`0 ${18+p.z*6}px ${40+p.z*10}px rgba(20,8,3,${0.28+p.z*0.06})`,
                 border:"1px solid rgba(255,255,255,.08)",
               }}>
