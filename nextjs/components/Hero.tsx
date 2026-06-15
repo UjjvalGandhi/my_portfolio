@@ -1,7 +1,7 @@
 "use client";
 import { motion } from "framer-motion";
 import { SiAndroid } from "react-icons/si";
-import { FaApple, FaDesktop, FaGlobe } from "react-icons/fa";
+import { FaApple, FaDesktop, FaGlobe, FaFilePdf } from "react-icons/fa";
 import { TbBrandFlutter } from "react-icons/tb";
 
 const fadeUp = (delay = 0) => ({
@@ -54,6 +54,7 @@ export default function Hero() {
 
         <motion.div {...fadeUp(0.5)} className="cta-stack" style={{ display:"flex", gap:".75rem", flexWrap:"wrap", marginTop:"2.5rem" }}>
           <button onClick={() => scrollTo("#projects")} style={btnP}>View Projects</button>
+          <a href="/resume.pdf" target="_blank" rel="noopener" style={{ ...btnS, display:"inline-flex", alignItems:"center", gap:".5rem" }}><FaFilePdf size={14} color="var(--red)" /> Resume</a>
           <button onClick={() => scrollTo("#contact")}  style={btnS}>Let&apos;s Talk</button>
           <a href="http://www.ujjvalgandhi.online/" target="_blank" rel="noopener" style={{ ...btnS, display:"inline-block" }}>Live Site ↗</a>
         </motion.div>
