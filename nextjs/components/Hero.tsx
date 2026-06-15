@@ -70,23 +70,19 @@ export default function Hero() {
       <motion.div className="hero-right-panel"
         initial={{ opacity:0, x:60 }} animate={{ opacity:1, x:0 }}
         transition={{ duration:0.8, delay:0.2, ease:"easeOut" }}
-        style={{ width:"34vw", background:"var(--sand)", position:"relative", overflow:"hidden", display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", padding:"2rem" }}
+        style={{ width:"34vw", background:"transparent", position:"relative", display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", padding:"2rem" }}
       >
-        <div style={{ position:"absolute", inset:0, background:"radial-gradient(60% 60% at 30% 30%, rgba(227,83,54,.25), transparent), radial-gradient(50% 50% at 80% 80%, rgba(160,82,45,.3), transparent)" }} />
-        <span style={{ position:"absolute", top:"1rem", right:"1.5rem", fontFamily:"var(--font-barlow)", fontWeight:900, fontSize:"7rem", color:"rgba(28,10,4,.07)", lineHeight:1, pointerEvents:"none" }}>01</span>
-
         {/* ── 3D PHONE FAN ── */}
         <div className="phone-fan" style={{ position:"relative", zIndex:1, width:"100%", height:"100%", display:"flex", alignItems:"center", justifyContent:"center", perspective:"1400px" }}>
           {phones.map((p, i) => (
             <motion.div
               key={p.src}
-              initial={{ opacity:0, y:40, rotateY:0 }}
-              animate={{ opacity:1, y:0, rotateY:p.ry }}
+              initial={{ opacity:0, y:40, x:p.x, rotate:p.rot, rotateY:p.ry, scale:p.scale }}
+              animate={{ opacity:1, y:0, x:p.x, rotate:p.rot, rotateY:p.ry, scale:p.scale }}
               transition={{ duration:0.8, delay:0.4 + i*0.12, ease:"easeOut" }}
-              whileHover={{ y:-14, scale:p.scale*1.04, transition:{ duration:0.3 } }}
+              whileHover={{ y:-14, scale:p.scale*1.05, zIndex:5, transition:{ duration:0.3 } }}
               style={{
                 position:"absolute",
-                transform:`translateX(${p.x}px) rotate(${p.rot}deg) scale(${p.scale})`,
                 zIndex:p.z,
               }}
             >
