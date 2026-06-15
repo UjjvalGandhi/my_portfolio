@@ -72,7 +72,7 @@ export default function Hero() {
         style={{ width:"34vw", background:"transparent", position:"relative", display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", padding:"2rem" }}
       >
         {/* half-circle backdrop, anchored to right edge, behind phones */}
-        <div style={{ position:"absolute", right:0, top:"50%", transform:"translateY(-50%)", width:260, height:520, borderRadius:"520px 0 0 520px", background:"var(--sand)", opacity:0.4, zIndex:0, pointerEvents:"none" }} />
+        <div style={{ position:"absolute", right:-60, top:"50%", transform:"translateY(-50%)", width:520, height:1040, borderRadius:"1040px 0 0 1040px", background:"var(--sand)", opacity:0.5, zIndex:0, pointerEvents:"none" }} />
 
         {/* ── 3D PHONE FAN ── */}
         <div className="phone-fan" style={{ position:"relative", zIndex:1, width:"100%", height:"100%", display:"flex", alignItems:"center", justifyContent:"center", perspective:"1400px" }}>
