@@ -2,7 +2,13 @@
 import { motion } from "framer-motion";
 import { SiAndroid } from "react-icons/si";
 import { FaApple, FaDesktop, FaGlobe, FaFilePdf } from "react-icons/fa";
-import { TbBrandFlutter } from "react-icons/tb";
+
+// Replace src with your real app screenshots (drop them in public/screens/)
+const phones = [
+  { src: "/screens/app2.png", alt: "App screen 1", x: -118, rot: -10, ry: -14, scale: 0.84, z: 1 },
+  { src: "/screens/app1.png", alt: "App screen 2", x: 0,    rot: 0,   ry: 0,   scale: 1,    z: 3 },
+  { src: "/screens/app3.png", alt: "App screen 3", x: 118,  rot: 10,  ry: 14,  scale: 0.84, z: 1 },
+];
 
 const fadeUp = (delay = 0) => ({
   initial: { opacity: 0, y: 28 },
@@ -69,19 +75,35 @@ export default function Hero() {
         <div style={{ position:"absolute", inset:0, background:"radial-gradient(60% 60% at 30% 30%, rgba(227,83,54,.25), transparent), radial-gradient(50% 50% at 80% 80%, rgba(160,82,45,.3), transparent)" }} />
         <span style={{ position:"absolute", top:"1rem", right:"1.5rem", fontFamily:"var(--font-barlow)", fontWeight:900, fontSize:"7rem", color:"rgba(28,10,4,.07)", lineHeight:1, pointerEvents:"none" }}>01</span>
 
-        <div className="hero-right-tag" style={{ position:"relative", zIndex:1, display:"flex", flexDirection:"column", alignItems:"center", textAlign:"center" }}>
-          {/* Flutter logo — TbBrandFlutter, no background box */}
-          <TbBrandFlutter
-            size={96}
-            style={{
-              display: "block",
-              marginBottom: "1.2rem",
-              color: "#54C5F8",
-              filter: "drop-shadow(0 8px 24px rgba(1,87,155,.4))",
-            }}
-          />
-          <div style={{ fontFamily:"var(--font-barlow)", fontWeight:800, fontSize:"clamp(1.4rem,2.5vw,2.2rem)", letterSpacing:".04em", color:"var(--ink)", lineHeight:1.1 }}>1+ Year<br />Flutter Dev</div>
-          <div style={{ fontSize:".75rem", fontWeight:500, color:"var(--ink2)", marginTop:".5rem", letterSpacing:".06em" }}>Anand, Gujarat · Remote OK</div>
+        {/* ── 3D PHONE FAN ── */}
+        <div className="phone-fan" style={{ position:"relative", zIndex:1, width:"100%", height:"100%", display:"flex", alignItems:"center", justifyContent:"center", perspective:"1400px" }}>
+          {phones.map((p, i) => (
+            <motion.div
+              key={p.src}
+              initial={{ opacity:0, y:40, rotateY:0 }}
+              animate={{ opacity:1, y:0, rotateY:p.ry }}
+              transition={{ duration:0.8, delay:0.4 + i*0.12, ease:"easeOut" }}
+              whileHover={{ y:-14, scale:p.scale*1.04, transition:{ duration:0.3 } }}
+              style={{
+                position:"absolute",
+                transform:`translateX(${p.x}px) rotate(${p.rot}deg) scale(${p.scale})`,
+                zIndex:p.z,
+              }}
+            >
+              <div style={{
+                width:182, height:380, borderRadius:30, background:"#0e0b09",
+                padding:7, boxShadow:`0 ${18+p.z*6}px ${40+p.z*10}px rgba(20,8,3,${0.28+p.z*0.06})`,
+                border:"1px solid rgba(255,255,255,.08)",
+              }}>
+                {/* notch */}
+                <div style={{ position:"absolute", top:14, left:"50%", transform:"translateX(-50%)", width:48, height:13, borderRadius:8, background:"#0e0b09", zIndex:2 }} />
+                <div style={{ width:"100%", height:"100%", borderRadius:24, overflow:"hidden", position:"relative", background:"#1c1c1c" }}>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={p.src} alt={p.alt} style={{ width:"100%", height:"100%", objectFit:"cover", display:"block" }} />
+                </div>
+              </div>
+            </motion.div>
+          ))}
         </div>
       </motion.div>
 
