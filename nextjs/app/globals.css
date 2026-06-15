@@ -65,12 +65,7 @@ body {
     overflow: hidden !important;
   }
   .phone-fan { transform: scale(0.72); }
-  .hero-circle {
-    width: 300px !important;
-    height: 600px !important;
-    border-radius: 600px 0 0 600px !important;
-    right: -40px !important;
-  }
+  .hero-circle { width: 300px !important; height: 300px !important; }
   .hero-right-tag { font-size: 1.2rem !important; text-align: left !important; }
   .hero-name-size { font-size: clamp(3.8rem, 16vw, 6rem) !important; }
   .hero-left-pad { padding: 5.5rem 1.5rem 2rem !important; }
@@ -97,5 +92,5 @@ body {
   .plat-wrap { gap: .35rem !important; }
   .hero-right-panel { height: 320px !important; }
   .phone-fan { transform: scale(0.62); }
-  .hero-circle { width: 260px !important; height: 520px !important; border-radius: 520px 0 0 520px !important; }
+  .hero-circle { width: 250px !important; height: 250px !important; }
 }
