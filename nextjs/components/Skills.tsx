@@ -1,5 +1,6 @@
 "use client";
-import { motion } from "framer-motion";
+import { useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { SiFlutter, SiDart, SiFirebase, SiAndroidstudio, SiXcode, SiMongodb, SiPhp, SiPython } from "react-icons/si";
 import { FaAws } from "react-icons/fa6";
 import { TbApi, TbCpu } from "react-icons/tb";
@@ -20,25 +21,61 @@ const skills = [
   { icon: <FaAws           size={28} color="#FF9900" />, name: "AWS"            },
 ];
 
-export default function Skills() {
+function SkillCard({ skill, index }: { skill: typeof skills[0]; index: number }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start 95%", "start 55%"],
+  });
+  const scale   = useTransform(scrollYProgress, [0, 1], [0.4, 1]);
+  const opacity = useTransform(scrollYProgress, [0, 0.6], [0, 1]);
+  const y       = useTransform(scrollYProgress, [0, 1], [30, 0]);
+
   return (
-    <section id="skills" className="sec-pad" style={{ maxWidth:1100, margin:"0 auto", padding:"4.5rem 3rem", position:"relative", zIndex:2 }}>
-      <motion.div initial={{ opacity:0, y:24 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }} transition={{ duration:0.6 }}>
+    <motion.div
+      ref={ref}
+      style={{ scale, opacity, y, background:"var(--card)", padding:"1.75rem 1rem", textAlign:"center", cursor:"default" }}
+      whileHover={{ backgroundColor:"#EDEBD0", scale: 1.04, transition:{ duration:0.2 } }}
+    >
+      <div style={{ display:"flex", justifyContent:"center", marginBottom:".6rem" }}>{skill.icon}</div>
+      <div style={{ fontSize:".78rem", fontWeight:700, color:"var(--ink2)", letterSpacing:".04em" }}>{skill.name}</div>
+    </motion.div>
+  );
+}
+
+export default function Skills() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start 80%", "start 20%"],
+  });
+  const headingY = useTransform(scrollYProgress, [0, 1], [40, 0]);
+  const headingOp = useTransform(scrollYProgress, [0, 0.5], [0, 1]);
+
+  return (
+    <section
+      id="skills"
+      ref={sectionRef}
+      className="sec-pad"
+      style={{ maxWidth:1100, margin:"0 auto", padding:"4.5rem 3rem", position:"relative", zIndex:2 }}
+    >
+      <motion.div style={{ y: headingY, opacity: headingOp }}>
         <p style={eyebrow}><span style={line} />Stack</p>
-        <h2 className="sec-title-size" style={secTitle}>FLUTTER <span style={{ WebkitTextStroke:"2px var(--ink)", color:"transparent" }}>TOOLKIT</span></h2>
+        <h2 className="sec-title-size" style={secTitle}>
+          FLUTTER <span style={{ WebkitTextStroke:"2px var(--ink)", color:"transparent" }}>TOOLKIT</span>
+        </h2>
       </motion.div>
 
-      <div className="sk-grid-cols" style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill, minmax(140px,1fr))", gap:"1px", background:"var(--border)", border:"1px solid var(--border)", borderRadius:"10px", overflow:"hidden" }}>
+      <div
+        className="sk-grid-cols"
+        style={{
+          display:"grid", gridTemplateColumns:"repeat(auto-fill, minmax(140px,1fr))",
+          gap:"1px", background:"var(--border)", border:"1px solid var(--border)",
+          borderRadius:"10px", overflow:"hidden",
+        }}
+      >
         {skills.map((s, i) => (
-          <motion.div key={s.name}
-            initial={{ opacity:0, y:20 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }}
-            transition={{ duration:0.5, delay: i * 0.06 }}
-            whileHover={{ backgroundColor:"#EDEBD0" }}
-            style={{ background:"var(--card)", padding:"1.75rem 1rem", textAlign:"center", cursor:"default" }}
-          >
-            <div style={{ display:"flex", justifyContent:"center", marginBottom:".6rem" }}>{s.icon}</div>
-            <div style={{ fontSize:".78rem", fontWeight:700, color:"var(--ink2)", letterSpacing:".04em" }}>{s.name}</div>
-          </motion.div>
+          <SkillCard key={s.name} skill={s} index={i} />
         ))}
       </div>
     </section>

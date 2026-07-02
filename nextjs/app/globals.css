@@ -15,6 +15,19 @@
 
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 html { scroll-behavior: smooth; }
+
+/* GPU acceleration for animated elements */
+.will-animate {
+  will-change: transform, opacity;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* 3D transform support */
+.preserve-3d {
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
 body {
   background: var(--bg);
   color: var(--ink);
@@ -49,12 +62,23 @@ body {
 @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
 @keyframes marquee { to { transform: translateX(-50%); } }
 
+/* Respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  html { scroll-behavior: auto; }
+}
+
 /* ── MOBILE ── */
 @media (max-width: 900px) {
-  #hero {
+  /* Hero sticky inner grid */
+  #hero-sticky {
     grid-template-columns: 1fr !important;
     grid-template-rows: auto auto auto !important;
-    min-height: unset !important;
+    height: 100svh !important;
   }
   .hero-right-panel {
     width: 100% !important;
