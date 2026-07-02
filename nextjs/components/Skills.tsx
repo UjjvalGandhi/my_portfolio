@@ -1,6 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
-import { SiFlutter, SiDart, SiFirebase, SiAndroidstudio, SiXcode, SiMongodb } from "react-icons/si";
+import { SiFlutter, SiDart, SiFirebase, SiAndroidstudio, SiXcode, SiMongodb, SiPhp, SiPython, SiAmazonaws } from "react-icons/si";
 import { TbApi, TbCpu } from "react-icons/tb";
 import { MdSettingsSuggest } from "react-icons/md";
 
@@ -13,7 +13,10 @@ const skills = [
   { icon: <SiXcode         size={28} color="#1575F9" />, name: "Xcode"          },
   { icon: <TbApi           size={28} color="#A0522D" />, name: "REST APIs"      },
   { icon: <SiMongodb       size={28} color="#47A248" />, name: "MongoDB"        },
-  { icon: <TbCpu           size={28} color="#6b3a1f" />, name: "IoT / Embedded" },
+  { icon: <TbCpu           size={28} color="#6b3a1f" />, name: "IoT / Embedded C" },
+  { icon: <SiPhp           size={28} color="#777BB4" />, name: "PHP"            },
+  { icon: <SiPython        size={28} color="#3776AB" />, name: "Python"         },
+  { icon: <SiAmazonaws     size={28} color="#FF9900" />, name: "AWS"            },
 ];
 
 export default function Skills() {

@@ -1,7 +1,7 @@
 "use client";
 import { motion } from "framer-motion";
 import { SiFlutter, SiFirebase } from "react-icons/si";
-import { MdInventory2, MdSensors, MdSportsCricket } from "react-icons/md";
+import { MdInventory2, MdSensors, MdSportsCricket, MdSchool } from "react-icons/md";
 import { FaPlaceOfWorship } from "react-icons/fa6";
 import { TbBrandCpp } from "react-icons/tb";
 import { BsBell } from "react-icons/bs";
@@ -20,27 +20,27 @@ const Tag = ({ label, type }: { label: string; type: string }) => (
 const projects = [
   {
     num: "01", icon: <FaPlaceOfWorship size={32} color="#A0522D" />,
-    name: "CrowdTrack",
-    desc: "Temple meal tracking across multiple states with real-time admin notifications.",
-    tags: [["Flutter","r"],["Firebase","s"],["Multi-state","b"]],
+    name: "Parabhakti",
+    desc: "Flutter app to centrally track temple devotee meal counts across multiple states with real-time admin notifications.",
+    tags: [["Flutter","r"],["Real-time","s"],["Multi-state","b"]],
   },
   {
     num: "02", icon: <MdInventory2 size={32} color="#E35336" />,
-    name: "StockStoreSync",
-    desc: "Inventory management with category & godown-wise tracking + FCM push alerts.",
+    name: "AVD Kitchen",
+    desc: "Flutter-based inventory app for category-wise/godown-wise daily grocery inflow tracking with Firebase Cloud Messaging.",
     tags: [["Flutter","r"],["FCM","s"],["Inventory","k"]],
   },
   {
-    num: "03", icon: <MdSensors size={32} color="#6b3a1f" />,
-    name: "Smart Door Lock",
-    desc: "IoT lock with fingerprint, RFID, Flutter app & Embedded C firmware integration.",
-    tags: [["Flutter","r"],["Embedded C","b"],["IoT","s"]],
+    num: "03", icon: <MdSchool size={32} color="#4A90D9" />,
+    name: "Online Course Registration",
+    desc: "Course registration system using PHP, XAMPP, and MySQL for secure enrollment and real-time updates.",
+    tags: [["PHP","r"],["MySQL","s"],["Web","b"]],
   },
   {
-    num: "04", icon: <MdSportsCricket size={32} color="#E35336" />,
-    name: "CricGem",
-    desc: "Fantasy cricket platform — real-time scoring, leagues & cross-platform play.",
-    tags: [["Flutter","r"],["Firebase","s"],["Real-time","k"]],
+    num: "04", icon: <MdSensors size={32} color="#6b3a1f" />,
+    name: "Smart Door Lock System",
+    desc: "IoT lock integrating fingerprint, RFID, push-button control, and a Flutter app using Embedded C.",
+    tags: [["Flutter","r"],["Embedded C","b"],["IoT","s"]],
   },
 ];
 

@@ -6,6 +6,7 @@ import { HiOutlineMail } from "react-icons/hi";
 const links = [
   { label: "Skills",   href: "#skills"   },
   { label: "Work",     href: "#work"     },
+  { label: "Education", href: "#education" },
   { label: "Projects", href: "#projects" },
   { label: "Contact",  href: "#contact"  },
   { label: "Live ↗",  href: "http://www.ujjvalgandhi.online/", external: true },
