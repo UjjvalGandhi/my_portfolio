@@ -1,8 +1,8 @@
 "use client";
-import { SiFlutter, SiDart, SiFirebase, SiMongodb, SiAndroid, SiPhp, SiPython, SiAmazonaws } from "react-icons/si";
+import { SiFlutter, SiDart, SiFirebase, SiMongodb, SiAndroid, SiPhp, SiPython } from "react-icons/si";
 import { TbApi, TbCpu } from "react-icons/tb";
 import { MdDesktopMac, MdWeb } from "react-icons/md";
-import { FaJava } from "react-icons/fa";
+import { FaJava, FaAws } from "react-icons/fa";
 
 const tags = [
   { label: "Flutter",    icon: <SiFlutter    size={12} color="#54C5F8" /> },
@@ -19,7 +19,7 @@ const tags = [
   { label: "MongoDB",    icon: <SiMongodb    size={12} color="#47A248" /> },
   { label: "PHP",        icon: <SiPhp        size={12} color="#777BB4" /> },
   { label: "Python",     icon: <SiPython     size={12} color="#3776AB" /> },
-  { label: "AWS",        icon: <SiAmazonaws  size={12} color="#FF9900" /> },
+  { label: "AWS",        icon: <FaAws        size={12} color="#FF9900" /> },
   { label: "Java",       icon: <FaJava       size={12} color="#5382a1" /> },
   { label: "C/C++",      icon: null },
 ];
