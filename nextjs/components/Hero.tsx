@@ -45,9 +45,9 @@ export default function Hero() {
     document.querySelector(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
 
   return (
-    /* 200vh scroll container — the sticky child stays pinned */
+    {/* 200vh scroll container — the sticky child stays pinned */}
     <div ref={containerRef} style={{ height: "200vh", position: "relative" }}>
-    /* Sticky wrapper — stays in view for the full 200vh */
+    {/* Sticky wrapper — stays in view for the full 200vh */}
     <div id="hero-sticky" style={{
       position: "sticky", top: 0,
       height: "100vh", overflow: "hidden",
