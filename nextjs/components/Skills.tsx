@@ -1,6 +1,6 @@
 "use client";
 import { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, type MotionValue } from "framer-motion";
 import { SiFlutter, SiDart, SiFirebase, SiAndroidstudio, SiXcode, SiMongodb, SiPhp, SiPython } from "react-icons/si";
 import { FaAws } from "react-icons/fa6";
 import { TbApi, TbCpu } from "react-icons/tb";
@@ -21,36 +21,54 @@ const skills = [
   { icon: <FaAws           size={28} color="#FF9900" />, name: "AWS"            },
 ];
 
-function SkillCard({ skill, index }: { skill: typeof skills[0]; index: number }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start 95%", "start 55%"],
-  });
-  const scale   = useTransform(scrollYProgress, [0, 1], [0.4, 1]);
-  const opacity = useTransform(scrollYProgress, [0, 0.6], [0, 1]);
-  const y       = useTransform(scrollYProgress, [0, 1], [30, 0]);
+/* Cards stagger across this slice of the grid's scroll progress; each card's
+   own reveal takes the remainder. Keeps the last card finishing before 1. */
+const STAGGER_SPAN = 0.55;
+const REVEAL_SPAN = 1 - STAGGER_SPAN;
+
+function SkillCard({ skill, index, progress }: {
+  skill: typeof skills[0];
+  index: number;
+  progress: MotionValue<number>;
+}) {
+  const start = (index / skills.length) * STAGGER_SPAN;
+  const end = start + REVEAL_SPAN;
+
+  const opacity = useTransform(progress, [start, end], [0, 1]);
+  const y       = useTransform(progress, [start, end], [18, 0]);
+  const scale   = useTransform(progress, [start, end], [0.85, 1]);
 
   return (
+    /* The cell itself never transforms — that keeps the 1px grid lines intact.
+       Only its contents animate. */
     <motion.div
-      ref={ref}
-      style={{ scale, opacity, y, background:"var(--card)", padding:"1.75rem 1rem", textAlign:"center", cursor:"default" }}
-      whileHover={{ backgroundColor:"#EDEBD0", scale: 1.04, transition:{ duration:0.2 } }}
+      style={{ background:"var(--card)", padding:"1.75rem 1rem", textAlign:"center", cursor:"default", position:"relative" }}
+      whileHover={{ backgroundColor:"#EDEBD0", transition:{ duration:0.2 } }}
     >
-      <div style={{ display:"flex", justifyContent:"center", marginBottom:".6rem" }}>{skill.icon}</div>
-      <div style={{ fontSize:".78rem", fontWeight:700, color:"var(--ink2)", letterSpacing:".04em" }}>{skill.name}</div>
+      <motion.div style={{ opacity, y, scale }}>
+        <div style={{ display:"flex", justifyContent:"center", marginBottom:".6rem" }}>{skill.icon}</div>
+        <div style={{ fontSize:".78rem", fontWeight:700, color:"var(--ink2)", letterSpacing:".04em" }}>{skill.name}</div>
+      </motion.div>
     </motion.div>
   );
 }
 
 export default function Skills() {
   const sectionRef = useRef<HTMLElement>(null);
+  const gridRef    = useRef<HTMLDivElement>(null);
+
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start 80%", "start 20%"],
   });
   const headingY = useTransform(scrollYProgress, [0, 1], [40, 0]);
   const headingOp = useTransform(scrollYProgress, [0, 0.5], [0, 1]);
+
+  /* One scroll subscription shared by every card, instead of one each. */
+  const { scrollYProgress: gridProgress } = useScroll({
+    target: gridRef,
+    offset: ["start 92%", "end 70%"],
+  });
 
   return (
     <section
@@ -67,6 +85,7 @@ export default function Skills() {
       </motion.div>
 
       <div
+        ref={gridRef}
         className="sk-grid-cols"
         style={{
           display:"grid", gridTemplateColumns:"repeat(auto-fill, minmax(140px,1fr))",
@@ -75,7 +94,7 @@ export default function Skills() {
         }}
       >
         {skills.map((s, i) => (
-          <SkillCard key={s.name} skill={s} index={i} />
+          <SkillCard key={s.name} skill={s} index={i} progress={gridProgress} />
         ))}
       </div>
     </section>
