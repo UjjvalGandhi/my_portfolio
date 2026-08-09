@@ -8,6 +8,7 @@ const links = [
   { label: "Work",     href: "#work"     },
   { label: "Education", href: "#education" },
   { label: "Projects", href: "#projects" },
+  { label: "Packages", href: "#packages" },
   { label: "Contact",  href: "#contact"  },
   { label: "Live ↗",  href: "http://www.ujjvalgandhi.online/", external: true },
 ];

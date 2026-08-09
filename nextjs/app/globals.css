@@ -97,7 +97,10 @@ body {
   .ct-pad { padding: 3.5rem 1.5rem !important; }
   .sk-grid-cols { grid-template-columns: repeat(3, 1fr) !important; }
   .proj-grid-cols { grid-template-columns: 1fr 1fr !important; }
+  .pk-grid-cols { grid-template-columns: 1fr !important; }
   .ct-grid-cols { grid-template-columns: 1fr 1fr !important; }
+  /* extra nav item — tighten spacing so the links still fit */
+  .nav-links-hide { gap: 1.15rem !important; }
 }
 
 @media (max-width: 600px) {
@@ -107,7 +110,9 @@ body {
   .hero-left-pad { padding: 5rem 1.25rem 1.5rem !important; }
   .hero-bottom-bar { padding: .75rem 1.25rem !important; font-size: .62rem !important; }
   .proj-grid-cols { grid-template-columns: 1fr !important; }
+  .pk-grid-cols { grid-template-columns: 1fr !important; }
   .ct-grid-cols { grid-template-columns: 1fr !important; }
+  .pk-name { font-size: .9rem !important; }
   .sk-grid-cols { grid-template-columns: repeat(3, 1fr) !important; }
   .sec-title-size { font-size: clamp(2.2rem, 10vw, 3.5rem) !important; }
   .cta-stack { flex-direction: column !important; width: 100% !important; }
