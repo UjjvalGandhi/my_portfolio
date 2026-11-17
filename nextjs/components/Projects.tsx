@@ -1,70 +1,47 @@
 "use client";
 import { motion } from "framer-motion";
 import { projects, type Project } from "@/lib/data";
-import { SectionHeading, Chip } from "./ui";
+import { SectionHeading, Tag } from "./ui";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
 function Card({ p, index }: { p: Project; index: number }) {
-  const featured = Boolean(p.featured);
-
   return (
     <motion.article
-      initial={{ opacity: 0, y: 32 }}
+      initial={{ opacity: 0, y: 18 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-60px" }}
-      transition={{ duration: 0.7, delay: (index % 2) * 0.09, ease: EASE }}
-      whileHover={{ y: -5 }}
-      className="glass glass-hover"
+      transition={{ duration: 0.55, delay: (index % 2) * 0.07, ease: EASE }}
+      className="panel-hover"
       style={{
-        gridColumn: featured ? "span 2" : "span 1",
-        padding: featured ? "2.2rem 2.2rem 2rem" : "1.8rem",
-        position: "relative",
-        overflow: "hidden",
+        gridColumn: p.featured ? "span 2" : "span 1",
+        padding: "2rem 1.75rem",
+        borderRight: "1px solid var(--line)",
+        borderBottom: "1px solid var(--line)",
         display: "flex",
         flexDirection: "column",
       }}
     >
-      {/* corner wash */}
+      {/* head rule */}
       <div
-        aria-hidden
         style={{
-          position: "absolute", top: 0, right: 0, width: 280, height: 220,
-          background: `radial-gradient(ellipse at 100% 0%, ${p.accent}22, transparent 68%)`,
-          pointerEvents: "none",
-        }}
-      />
-      {/* watermark number */}
-      <span
-        aria-hidden
-        style={{
-          position: "absolute", top: "-.4rem", right: "1rem",
-          fontFamily: "var(--font-display)", fontWeight: 700,
-          fontSize: featured ? "7rem" : "5rem", lineHeight: 1,
-          color: "#fff", opacity: 0.035, letterSpacing: "-.05em",
+          display: "flex", alignItems: "baseline", gap: ".75rem",
+          paddingBottom: ".9rem", marginBottom: "1.25rem",
+          borderBottom: "1px solid var(--line)",
         }}
       >
-        {p.num}
-      </span>
-
-      <div style={{ position: "relative", display: "flex", alignItems: "center", gap: ".6rem", flexWrap: "wrap", marginBottom: "1rem" }}>
-        <span
-          className="mono"
-          style={{
-            fontSize: ".64rem", letterSpacing: ".16em", textTransform: "uppercase",
-            color: p.accent,
-          }}
-        >
-          {p.tagline}
+        <span className="mono" style={{ fontSize: ".7rem", fontWeight: 600, color: "var(--accent)" }}>
+          {p.num}
         </span>
+        <span className="label" style={{ fontSize: ".6rem" }}>{p.tagline}</span>
         {p.badge && (
           <span
             className="mono"
             style={{
-              fontSize: ".58rem", letterSpacing: ".12em", textTransform: "uppercase",
-              padding: ".22rem .55rem", borderRadius: 999,
-              border: "1px solid rgba(255,255,255,.16)", background: "rgba(255,255,255,.05)",
-              color: "var(--text-dim)",
+              marginLeft: "auto", fontSize: ".58rem", letterSpacing: ".1em",
+              textTransform: "uppercase", padding: ".2rem .5rem",
+              border: "1px solid var(--line-2)", color: "var(--ink-2)",
+              whiteSpace: "nowrap",
             }}
           >
             {p.badge}
@@ -73,22 +50,17 @@ function Card({ p, index }: { p: Project; index: number }) {
       </div>
 
       <h3
-        style={{
-          position: "relative",
-          fontFamily: "var(--font-display)", fontWeight: 650,
-          fontSize: featured ? "clamp(1.6rem, 3vw, 2.2rem)" : "1.35rem",
-          letterSpacing: "-.03em", color: "var(--text)", marginBottom: ".9rem",
-        }}
+        className="display"
+        style={{ fontSize: p.featured ? "clamp(1.6rem, 3vw, 2.1rem)" : "1.35rem", marginBottom: ".9rem" }}
       >
         {p.name}
       </h3>
 
       <p
         style={{
-          position: "relative",
-          fontSize: ".92rem", lineHeight: 1.76, color: "var(--text-dim)",
-          marginBottom: p.backend ? "1rem" : "1.5rem",
-          maxWidth: featured ? 700 : undefined,
+          fontSize: ".93rem", lineHeight: 1.7, color: "var(--ink-2)",
+          marginBottom: p.backend ? "1.1rem" : "1.75rem",
+          maxWidth: p.featured ? 680 : undefined,
         }}
       >
         {p.body}
@@ -97,31 +69,29 @@ function Card({ p, index }: { p: Project; index: number }) {
       {p.backend && (
         <div
           style={{
-            position: "relative",
-            display: "grid", gridTemplateColumns: "auto 1fr", gap: ".75rem",
-            padding: ".85rem 1rem", borderRadius: 11, marginBottom: "1.5rem",
-            background: "rgba(255,255,255,.028)", border: "1px solid var(--stroke)",
+            display: "grid", gridTemplateColumns: "2.6rem 1fr", gap: ".6rem",
+            padding: "1rem", marginBottom: "1.75rem",
+            background: "var(--bg-alt)", border: "1px solid var(--line)",
           }}
         >
-          <span
-            className="mono"
-            style={{
-              fontSize: ".58rem", letterSpacing: ".14em", textTransform: "uppercase",
-              color: "var(--lime)", paddingTop: ".15rem",
-            }}
-          >
+          <span className="label" style={{ fontSize: ".56rem", color: "var(--accent)", paddingTop: ".15rem" }}>
             API
           </span>
-          <span style={{ fontSize: ".85rem", lineHeight: 1.7, color: "var(--text-dim)" }}>{p.backend}</span>
+          <span style={{ fontSize: ".86rem", lineHeight: 1.65, color: "var(--ink-2)" }}>{p.backend}</span>
         </div>
       )}
 
-      <div style={{ position: "relative", marginTop: "auto", display: "flex", flexWrap: "wrap", gap: ".4rem", alignItems: "center" }}>
-        {p.tags.map(t => <Chip key={t} label={t} />)}
+      <div
+        style={{
+          marginTop: "auto", display: "flex", flexWrap: "wrap",
+          gap: ".4rem", alignItems: "center",
+        }}
+      >
+        {p.tags.map(t => <Tag key={t} label={t} />)}
         {p.period && (
           <span
             className="mono"
-            style={{ marginLeft: "auto", fontSize: ".65rem", color: "var(--text-faint)", letterSpacing: ".04em", whiteSpace: "nowrap" }}
+            style={{ marginLeft: "auto", fontSize: ".66rem", color: "var(--ink-3)", whiteSpace: "nowrap" }}
           >
             {p.period}
           </span>
@@ -147,7 +117,8 @@ export default function Projects() {
         style={{
           display: "grid",
           gridTemplateColumns: "repeat(2, 1fr)",
-          gap: "1.1rem",
+          borderTop: "1px solid var(--line)",
+          borderLeft: "1px solid var(--line)",
         }}
       >
         {projects.map((p, i) => <Card key={p.num} p={p} index={i} />)}

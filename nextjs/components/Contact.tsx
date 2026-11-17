@@ -1,129 +1,102 @@
 "use client";
 import { motion } from "framer-motion";
 import { profile } from "@/lib/data";
-import { Reveal, PrimaryButton, GhostButton } from "./ui";
+import { SectionHeading, Reveal, Button } from "./ui";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
 const channels = [
-  { label: "Email",    value: profile.email,     href: `mailto:${profile.email}`, accent: "#22D3EE" },
-  { label: "Phone",    value: profile.phone,     href: profile.phoneHref,          accent: "#A3E635" },
-  { label: "LinkedIn", value: "in/ujjvalgandhi", href: profile.linkedin,           accent: "#818CF8" },
-  { label: "GitHub",   value: "UjjvalGandhi",    href: profile.github,             accent: "#F472B6" },
+  { label: "Email",    value: profile.email,     href: `mailto:${profile.email}` },
+  { label: "Phone",    value: profile.phone,     href: profile.phoneHref },
+  { label: "LinkedIn", value: "in/ujjvalgandhi", href: profile.linkedin },
+  { label: "GitHub",   value: "UjjvalGandhi",    href: profile.github },
 ];
 
+/* The one inverted block on the site — a deliberate full-bleed stop at
+   the end of an otherwise white page. */
 export default function Contact() {
   return (
-    <section id="contact" className="section" style={{ paddingBottom: "5rem" }}>
+    <section id="contact" style={{ background: "var(--bg-ink)", position: "relative", zIndex: 1 }}>
       <div
-        className="glass"
         style={{
-          position: "relative",
-          overflow: "hidden",
-          borderRadius: "var(--r-lg)",
-          padding: "clamp(2.5rem, 6vw, 5rem)",
+          maxWidth: "var(--maxw)",
+          margin: "0 auto",
+          paddingInline: "var(--gut)",
+          paddingBlock: "7rem",
+          borderLeft: "1px solid var(--line-ink)",
+          borderRight: "1px solid var(--line-ink)",
         }}
       >
-        {/* aurora wash inside the card */}
-        <div
-          aria-hidden
-          style={{
-            position: "absolute", inset: 0, pointerEvents: "none",
-            background:
-              "radial-gradient(ellipse 70% 100% at 10% 0%, rgba(34,211,238,.17), transparent 60%), radial-gradient(ellipse 70% 100% at 90% 100%, rgba(244,114,182,.14), transparent 60%)",
-          }}
+        <SectionHeading
+          index="06"
+          eyebrow="Contact"
+          title="Let's build something"
+          accentWord="worth shipping."
+          onInk
         />
 
-        <div style={{ position: "relative" }}>
-          <Reveal>
-            <div
-              className="mono"
-              style={{
-                display: "inline-flex", alignItems: "center", gap: ".6rem",
-                fontSize: ".68rem", letterSpacing: ".2em", textTransform: "uppercase",
-                color: "var(--text-faint)", marginBottom: "1.3rem",
-              }}
-            >
-              <span style={{ color: "var(--cyan)" }}>06</span>
-              <span style={{ width: 26, height: 1, background: "linear-gradient(90deg, var(--cyan), transparent)" }} />
-              Contact
-            </div>
-          </Reveal>
-
-          <Reveal delay={1}>
-            <h2
-              style={{
-                fontFamily: "var(--font-display)", fontWeight: 700,
-                fontSize: "clamp(2.4rem, 6.5vw, 5rem)", lineHeight: 1,
-                letterSpacing: "-.045em", marginBottom: "1.4rem", maxWidth: 860,
-              }}
-            >
-              Let&apos;s build something{" "}
-              <span className="grad-text">worth shipping.</span>
-            </h2>
-          </Reveal>
-
-          <Reveal delay={2}>
-            <p style={{ fontSize: "1.02rem", lineHeight: 1.78, color: "var(--text-dim)", maxWidth: 520, marginBottom: "2.6rem" }}>
-              Open to full-time roles and freelance work — full stack, Flutter, or Next.js and Node.
-              Based in {profile.location}. Remote friendly.
-            </p>
-          </Reveal>
-
-          <Reveal delay={3}>
-            <div className="hero-cta" style={{ display: "flex", gap: ".75rem", flexWrap: "wrap", marginBottom: "3.2rem" }}>
-              <PrimaryButton href={`mailto:${profile.email}`}>Start a conversation →</PrimaryButton>
-              <GhostButton href={profile.resumeUrl} target="_blank">Download résumé ↓</GhostButton>
-            </div>
-          </Reveal>
-
-          <div
-            className="contact-grid"
-            style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(210px, 1fr))", gap: ".7rem" }}
+        <Reveal>
+          <p
+            style={{
+              fontSize: "1.05rem", lineHeight: 1.75, color: "var(--on-ink-2)",
+              maxWidth: 520, marginBottom: "2.75rem", marginTop: "-2rem",
+            }}
           >
-            {channels.map((c, i) => (
-              <motion.a
-                key={c.label}
-                href={c.href}
-                target={c.href.startsWith("http") ? "_blank" : undefined}
-                rel={c.href.startsWith("http") ? "noopener" : undefined}
-                initial={{ opacity: 0, y: 18 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-40px" }}
-                transition={{ duration: 0.55, delay: i * 0.07, ease: EASE }}
-                whileHover={{ y: -3 }}
+            Open to full-time roles and freelance work — full stack, Flutter, or Next.js and Node.
+            Based in {profile.location}. Remote friendly.
+          </p>
+        </Reveal>
+
+        <Reveal delay={1}>
+          <div className="hero-cta" style={{ display: "flex", gap: ".6rem", flexWrap: "wrap", marginBottom: "4rem" }}>
+            <Button variant="on-ink" href={`mailto:${profile.email}`}>Start a conversation</Button>
+            <Button variant="on-ink-ghost" href={profile.resumeUrl} target="_blank">Résumé (PDF)</Button>
+          </div>
+        </Reveal>
+
+        <div
+          className="contact-grid"
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+            borderTop: "1px solid var(--line-ink)",
+            borderLeft: "1px solid var(--line-ink)",
+          }}
+        >
+          {channels.map((c, i) => (
+            <motion.a
+              key={c.label}
+              href={c.href}
+              target={c.href.startsWith("http") ? "_blank" : undefined}
+              rel={c.href.startsWith("http") ? "noopener" : undefined}
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ duration: 0.45, delay: i * 0.06, ease: EASE }}
+              style={{
+                display: "grid",
+                gap: ".5rem",
+                padding: "1.4rem 1.2rem",
+                borderRight: "1px solid var(--line-ink)",
+                borderBottom: "1px solid var(--line-ink)",
+                textDecoration: "none",
+                transition: "background .2s var(--ease)",
+              }}
+              onMouseEnter={e => (e.currentTarget.style.background = "#141414")}
+              onMouseLeave={e => (e.currentTarget.style.background = "transparent")}
+            >
+              <span className="label" style={{ fontSize: ".56rem", color: "var(--on-ink-2)" }}>{c.label}</span>
+              <span
+                className="mono"
                 style={{
-                  display: "grid", gap: ".35rem",
-                  padding: "1.1rem 1.25rem", borderRadius: 13,
-                  border: "1px solid var(--stroke)", background: "rgba(255,255,255,.028)",
-                  textDecoration: "none", transition: "border-color .3s, background .3s",
-                }}
-                onMouseEnter={e => {
-                  e.currentTarget.style.borderColor = `${c.accent}66`;
-                  e.currentTarget.style.background = `${c.accent}0f`;
-                }}
-                onMouseLeave={e => {
-                  e.currentTarget.style.borderColor = "var(--stroke)";
-                  e.currentTarget.style.background = "rgba(255,255,255,.028)";
+                  fontSize: ".84rem", color: "var(--on-ink)",
+                  overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap",
                 }}
               >
-                <span
-                  className="mono"
-                  style={{ fontSize: ".6rem", letterSpacing: ".16em", textTransform: "uppercase", color: c.accent }}
-                >
-                  {c.label}
-                </span>
-                <span
-                  style={{
-                    fontSize: ".86rem", fontWeight: 500, color: "var(--text)",
-                    overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap",
-                  }}
-                >
-                  {c.value}
-                </span>
-              </motion.a>
-            ))}
-          </div>
+                {c.value}
+              </span>
+            </motion.a>
+          ))}
         </div>
       </div>
     </section>

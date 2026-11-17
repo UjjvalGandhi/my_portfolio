@@ -11,10 +11,10 @@ import {
 } from "framer-motion";
 import { marqueeTags } from "@/lib/data";
 
-const LOOP = 50;              // the track holds two copies
-const SECONDS_PER_LOOP = 38;
+const LOOP = 50;
+const SECONDS_PER_LOOP = 44;
 const BASE = LOOP / SECONDS_PER_LOOP;
-const MAX_BOOST = 2.6;
+const MAX_BOOST = 2.2;
 const MAX_FRAME_MS = 50;
 
 function wrap(min: number, max: number, v: number) {
@@ -45,24 +45,13 @@ export default function Marquee() {
     <div
       style={{
         position: "relative",
-        zIndex: 2,
         overflow: "hidden",
-        padding: "1.15rem 0",
-        borderTop: "1px solid var(--stroke)",
-        borderBottom: "1px solid var(--stroke)",
-        background: "rgba(255,255,255,.018)",
-        backdropFilter: "blur(10px)",
+        padding: ".95rem 0",
+        borderTop: "1px solid var(--line)",
+        borderBottom: "1px solid var(--line)",
+        background: "var(--bg-alt)",
       }}
     >
-      {/* edge fades */}
-      <div
-        aria-hidden
-        style={{
-          position: "absolute", inset: 0, zIndex: 2, pointerEvents: "none",
-          background:
-            "linear-gradient(90deg, var(--bg) 0%, transparent 12%, transparent 88%, var(--bg) 100%)",
-        }}
-      />
       <motion.div style={{ display: "flex", width: "max-content", x, willChange: "transform" }}>
         {all.map((t, i) => (
           <span
@@ -72,18 +61,18 @@ export default function Marquee() {
             style={{
               display: "inline-flex",
               alignItems: "center",
-              gap: ".9rem",
-              padding: "0 1.35rem",
-              fontSize: ".78rem",
+              gap: "1.1rem",
+              padding: "0 1.1rem",
+              fontSize: ".72rem",
               fontWeight: 500,
-              letterSpacing: ".13em",
+              letterSpacing: ".1em",
               textTransform: "uppercase",
-              color: "var(--text-dim)",
+              color: "var(--ink-2)",
               whiteSpace: "nowrap",
             }}
           >
             {t}
-            <span style={{ color: "var(--cyan)", fontSize: ".4rem", opacity: 0.8 }}>◆</span>
+            <span style={{ width: 3, height: 3, background: "var(--accent)" }} />
           </span>
         ))}
       </motion.div>

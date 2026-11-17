@@ -1,5 +1,4 @@
-import Aurora      from "@/components/Aurora";
-import Cursor      from "@/components/Cursor";
+import GridRails   from "@/components/GridRails";
 import ProgressBar from "@/components/ProgressBar";
 import Navbar      from "@/components/Navbar";
 import Hero        from "@/components/Hero";
@@ -17,20 +16,30 @@ export default function Home() {
   return (
     <>
       <JsonLd />
-      <Aurora />
-      <Cursor />
+      <GridRails />
       <ProgressBar />
       <Navbar />
+
       <main>
-        <Hero />
+        <div className="shell">
+          <Hero />
+        </div>
+
+        {/* full-bleed band */}
         <Marquee />
-        <About />
-        <Skills />
-        <Experience />
-        <Projects />
-        <Packages />
+
+        <div className="shell">
+          <About />
+          <Skills />
+          <Experience />
+          <Projects />
+          <Packages />
+        </div>
+
+        {/* full-bleed inverted block */}
         <Contact />
       </main>
+
       <Footer />
     </>
   );

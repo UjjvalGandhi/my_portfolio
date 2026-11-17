@@ -20,81 +20,59 @@ export default function Skills() {
         className="skills-grid"
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
-          gap: "1.1rem",
+          gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+          borderTop: "1px solid var(--line)",
+          borderLeft: "1px solid var(--line)",
         }}
       >
         {skillGroups.map((g, i) => (
           <motion.div
             key={g.key}
-            initial={{ opacity: 0, y: 26 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
             viewport={{ once: true, margin: "-60px" }}
-            transition={{ duration: 0.65, delay: (i % 3) * 0.08, ease: EASE }}
-            whileHover={{ y: -4 }}
-            className="glass glass-hover"
-            style={{ padding: "1.6rem 1.6rem 1.4rem", position: "relative", overflow: "hidden" }}
+            transition={{ duration: 0.5, delay: (i % 3) * 0.07, ease: EASE }}
+            style={{
+              padding: "1.6rem 1.5rem",
+              borderRight: "1px solid var(--line)",
+              borderBottom: "1px solid var(--line)",
+            }}
           >
-            {/* top accent wash */}
             <div
-              aria-hidden
               style={{
-                position: "absolute", top: 0, left: 0, right: 0, height: 100,
-                background: `radial-gradient(ellipse at 20% 0%, ${g.accent}1f, transparent 70%)`,
-                pointerEvents: "none",
+                display: "flex", alignItems: "baseline", gap: ".7rem",
+                paddingBottom: ".9rem", marginBottom: "1.1rem",
+                borderBottom: "1px solid var(--line)",
               }}
-            />
-
-            <div style={{ position: "relative", display: "flex", alignItems: "center", gap: ".7rem", marginBottom: "1.25rem" }}>
-              <span
-                style={{
-                  width: 8, height: 8, borderRadius: 3, background: g.accent,
-                  boxShadow: `0 0 12px ${g.accent}aa`, flexShrink: 0,
-                }}
-              />
-              <h3 style={{ fontSize: ".95rem", fontWeight: 600, letterSpacing: "-.01em", color: "var(--text)" }}>
+            >
+              <span className="mono" style={{ fontSize: ".62rem", color: "var(--accent)" }}>
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              <h3 style={{ fontSize: ".92rem", fontWeight: 600, letterSpacing: "-.012em", color: "var(--ink)" }}>
                 {g.title}
               </h3>
-              <span
-                className="mono"
-                style={{ marginLeft: "auto", fontSize: ".65rem", color: "var(--text-faint)" }}
-              >
-                {String(g.items.length).padStart(2, "0")}
+              <span className="mono" style={{ marginLeft: "auto", fontSize: ".62rem", color: "var(--ink-3)" }}>
+                {g.items.length}
               </span>
             </div>
 
-            <div style={{ position: "relative", display: "flex", flexWrap: "wrap", gap: ".4rem" }}>
+            <ul style={{ listStyle: "none", display: "grid", gap: ".45rem" }}>
               {g.items.map(item => (
-                <span
+                <li
                   key={item}
                   className="mono"
                   style={{
-                    fontSize: ".7rem",
-                    fontWeight: 500,
-                    letterSpacing: ".01em",
-                    padding: ".36rem .7rem",
-                    borderRadius: 8,
-                    border: "1px solid var(--stroke)",
-                    background: "rgba(255,255,255,.03)",
-                    color: "var(--text-dim)",
-                    whiteSpace: "nowrap",
-                    transition: "color .25s, border-color .25s, background .25s",
-                  }}
-                  onMouseEnter={e => {
-                    e.currentTarget.style.color = g.accent;
-                    e.currentTarget.style.borderColor = `${g.accent}55`;
-                    e.currentTarget.style.background = `${g.accent}12`;
-                  }}
-                  onMouseLeave={e => {
-                    e.currentTarget.style.color = "var(--text-dim)";
-                    e.currentTarget.style.borderColor = "var(--stroke)";
-                    e.currentTarget.style.background = "rgba(255,255,255,.03)";
+                    display: "flex", alignItems: "center", gap: ".55rem",
+                    fontSize: ".76rem", color: "var(--ink-2)",
                   }}
                 >
+                  <span
+                    style={{ width: 3, height: 3, background: "var(--ink-3)", flexShrink: 0 }}
+                  />
                   {item}
-                </span>
+                </li>
               ))}
-            </div>
+            </ul>
           </motion.div>
         ))}
       </div>

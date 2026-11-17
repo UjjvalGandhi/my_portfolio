@@ -29,8 +29,8 @@ const DESCRIPTION =
   "Ujjawal Gandhi is a full stack developer in Anand, Gujarat, India. Cross-platform apps in Flutter, web apps in Next.js, and REST APIs in Node.js & Express deployed on AWS Lambda and Oracle Cloud. Author of open-source Flutter packages on pub.dev.";
 
 export const viewport: Viewport = {
-  themeColor: "#07070B",
-  colorScheme: "dark",
+  themeColor: "#FFFFFF",
+  colorScheme: "light",
 };
 
 export const metadata: Metadata = {

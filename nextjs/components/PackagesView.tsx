@@ -6,16 +6,6 @@ import { SectionHeading } from "./ui";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
-const ACCENTS: Record<string, string> = {
-  liquid_glass_bottom_nav_native: "#22D3EE",
-  liquid_glass_bottom_nav_cli: "#818CF8",
-};
-
-const GLYPH: Record<string, string> = {
-  liquid_glass_bottom_nav_native: "◆",
-  liquid_glass_bottom_nav_cli: "❯_",
-};
-
 /* navigator.clipboard needs a secure context and can still be refused, so
    fall back to the old execCommand path before giving up. */
 async function writeToClipboard(text: string): Promise<boolean> {
@@ -25,9 +15,8 @@ async function writeToClipboard(text: string): Promise<boolean> {
       return true;
     }
   } catch {
-    /* fall through to the textarea path */
+    /* fall through */
   }
-
   try {
     const ta = document.createElement("textarea");
     ta.value = text;
@@ -43,188 +32,137 @@ async function writeToClipboard(text: string): Promise<boolean> {
   }
 }
 
-function Stat({ value, label, highlight }: { value: string; label: string; highlight?: boolean }) {
+function Stat({ value, label, accent }: { value: string; label: string; accent?: boolean }) {
   return (
     <div style={{ display: "grid", gap: ".3rem" }}>
       <span
         className="mono"
-        style={{
-          fontSize: "1.05rem", fontWeight: 600, lineHeight: 1,
-          color: highlight ? "var(--lime)" : "var(--text)",
-        }}
+        style={{ fontSize: "1.05rem", fontWeight: 600, lineHeight: 1, color: accent ? "var(--accent)" : "var(--ink)" }}
       >
         {value}
       </span>
-      <span
-        className="mono"
-        style={{ fontSize: ".58rem", letterSpacing: ".14em", textTransform: "uppercase", color: "var(--text-faint)" }}
-      >
-        {label}
-      </span>
+      <span className="label" style={{ fontSize: ".56rem" }}>{label}</span>
     </div>
   );
 }
 
 function PackageCard({ pkg, index }: { pkg: PubPackage; index: number }) {
-  const accent = ACCENTS[pkg.name] ?? "#22D3EE";
   const [copied, setCopied] = useState(false);
   const install = `flutter pub add ${pkg.name}`;
   const perfect = pkg.points === pkg.maxPoints;
 
   const copy = async () => {
-    const ok = await writeToClipboard(install);
-    if (!ok) return; // command stays on screen to copy by hand
+    if (!(await writeToClipboard(install))) return;
     setCopied(true);
     setTimeout(() => setCopied(false), 1800);
   };
 
   return (
     <motion.article
-      initial={{ opacity: 0, y: 30 }}
+      initial={{ opacity: 0, y: 18 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-60px" }}
-      transition={{ duration: 0.7, delay: index * 0.1, ease: EASE }}
-      whileHover={{ y: -5 }}
-      className="glass glass-hover"
-      style={{ padding: "1.9rem", position: "relative", overflow: "hidden", display: "flex", flexDirection: "column" }}
+      transition={{ duration: 0.55, delay: index * 0.08, ease: EASE }}
+      style={{
+        padding: "1.9rem 1.75rem",
+        borderRight: "1px solid var(--line)",
+        borderBottom: "1px solid var(--line)",
+        display: "flex",
+        flexDirection: "column",
+      }}
     >
       <div
-        aria-hidden
         style={{
-          position: "absolute", top: 0, left: 0, right: 0, height: 170,
-          background: `radial-gradient(ellipse at 15% 0%, ${accent}26, transparent 70%)`,
-          pointerEvents: "none",
+          display: "flex", alignItems: "baseline", gap: ".6rem", flexWrap: "wrap",
+          paddingBottom: ".9rem", marginBottom: "1.25rem",
+          borderBottom: "1px solid var(--line)",
         }}
-      />
-
-      <div style={{ position: "relative", display: "flex", alignItems: "flex-start", gap: "1rem", marginBottom: "1.2rem" }}>
-        <span
-          className="mono"
-          style={{
-            display: "grid", placeItems: "center", width: 42, height: 42, borderRadius: 12,
-            background: `${accent}14`, border: `1px solid ${accent}3d`, color: accent,
-            fontSize: ".95rem", flexShrink: 0,
-          }}
-        >
-          {GLYPH[pkg.name] ?? "◆"}
+      >
+        <span className="mono" style={{ fontSize: ".86rem", fontWeight: 600, color: "var(--ink)", wordBreak: "break-word" }}>
+          {pkg.name}
         </span>
-
-        <div style={{ minWidth: 0, flex: 1 }}>
-          <div
+        <span className="mono" style={{ fontSize: ".68rem", color: "var(--accent)" }}>v{pkg.version}</span>
+        <span className="mono" style={{ fontSize: ".66rem", color: "var(--ink-3)" }}>MIT</span>
+        {perfect && (
+          <span
             className="mono"
             style={{
-              fontSize: ".88rem", fontWeight: 600, color: "var(--text)",
-              wordBreak: "break-word", lineHeight: 1.35, marginBottom: ".3rem",
+              marginLeft: "auto", fontSize: ".56rem", letterSpacing: ".1em",
+              textTransform: "uppercase", padding: ".2rem .45rem",
+              background: "var(--accent-bg)", color: "var(--accent-2)",
+              whiteSpace: "nowrap",
             }}
           >
-            {pkg.name}
-          </div>
-          <div style={{ display: "flex", alignItems: "center", gap: ".45rem", flexWrap: "wrap" }}>
-            <span className="mono" style={{ fontSize: ".66rem", color: accent }}>v{pkg.version}</span>
-            <span style={{ color: "var(--text-faint)", fontSize: ".6rem" }}>·</span>
-            <span className="mono" style={{ fontSize: ".66rem", color: "var(--text-faint)" }}>MIT</span>
-            {perfect && (
-              <span
-                className="mono"
-                style={{
-                  fontSize: ".56rem", letterSpacing: ".12em", textTransform: "uppercase",
-                  padding: ".2rem .5rem", borderRadius: 999,
-                  border: "1px solid rgba(163,230,53,.3)", background: "rgba(163,230,53,.09)",
-                  color: "var(--lime)",
-                }}
-              >
-                Perfect score
-              </span>
-            )}
-          </div>
-        </div>
+            Perfect score
+          </span>
+        )}
       </div>
 
-      <p style={{ position: "relative", fontSize: ".89rem", lineHeight: 1.74, color: "var(--text-dim)", marginBottom: "1.3rem" }}>
+      <p style={{ fontSize: ".9rem", lineHeight: 1.7, color: "var(--ink-2)", marginBottom: "1.4rem" }}>
         {pkg.description}
       </p>
 
-      <div style={{ position: "relative", display: "flex", flexWrap: "wrap", gap: ".35rem", marginBottom: "1.5rem" }}>
+      <div style={{ display: "flex", flexWrap: "wrap", gap: ".35rem", marginBottom: "1.75rem" }}>
         {pkg.platforms.map(p => (
           <span
             key={p}
             className="mono"
-            style={{
-              fontSize: ".64rem", padding: ".26rem .58rem", borderRadius: 7,
-              border: "1px solid var(--stroke)", background: "rgba(255,255,255,.03)",
-              color: "var(--text-faint)",
-            }}
+            style={{ fontSize: ".66rem", padding: ".22rem .5rem", border: "1px solid var(--line)", color: "var(--ink-3)" }}
           >
             {p}
           </span>
         ))}
       </div>
 
-      <div style={{ position: "relative", marginTop: "auto" }}>
+      <div style={{ marginTop: "auto" }}>
         {/* pub points meter */}
-        <div style={{ marginBottom: "1.3rem" }}>
-          <div
-            style={{
-              height: 4, borderRadius: 99, background: "rgba(255,255,255,.07)",
-              overflow: "hidden", marginBottom: ".9rem",
-            }}
-          >
-            <motion.div
-              initial={{ width: 0 }}
-              whileInView={{ width: `${(pkg.points / pkg.maxPoints) * 100}%` }}
-              viewport={{ once: true }}
-              transition={{ duration: 1.1, delay: 0.25, ease: EASE }}
-              style={{
-                height: "100%", borderRadius: 99,
-                background: `linear-gradient(90deg, ${accent}, var(--lime))`,
-                boxShadow: `0 0 12px ${accent}99`,
-              }}
-            />
-          </div>
-          <div style={{ display: "flex", gap: "2rem", flexWrap: "wrap" }}>
-            <Stat value={`${pkg.points}/${pkg.maxPoints}`} label="Pub points" highlight={perfect} />
-            <Stat value={String(pkg.likes)} label="Likes" />
-            <Stat value={String(pkg.downloads)} label="Downloads / 30d" />
-          </div>
+        <div style={{ height: 3, background: "var(--line)", marginBottom: "1rem" }}>
+          <motion.div
+            initial={{ width: 0 }}
+            whileInView={{ width: `${(pkg.points / pkg.maxPoints) * 100}%` }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.9, delay: 0.2, ease: EASE }}
+            style={{ height: "100%", background: "var(--accent)" }}
+          />
         </div>
 
-        {/* install */}
+        <div style={{ display: "flex", gap: "2rem", flexWrap: "wrap", marginBottom: "1.5rem" }}>
+          <Stat value={`${pkg.points}/${pkg.maxPoints}`} label="Pub points" accent={perfect} />
+          <Stat value={String(pkg.likes)} label="Likes" />
+          <Stat value={String(pkg.downloads)} label="Downloads / 30d" />
+        </div>
+
         <button
           onClick={copy}
           className="mono"
           aria-label={`Copy install command for ${pkg.name}`}
           style={{
             width: "100%", display: "flex", alignItems: "center", gap: ".6rem",
-            padding: ".7rem .85rem", borderRadius: 10, marginBottom: ".9rem",
-            background: "rgba(0,0,0,.35)", border: "1px solid var(--stroke)",
-            color: "var(--text-dim)", fontSize: ".7rem", textAlign: "left",
-            overflow: "hidden",
+            padding: ".7rem .8rem", marginBottom: "1.1rem",
+            background: "var(--bg-alt)", border: "1px solid var(--line)",
+            color: "var(--ink-2)", fontSize: ".72rem", textAlign: "left",
+            cursor: "pointer", overflow: "hidden",
           }}
         >
-          <span style={{ color: accent, flexShrink: 0 }}>$</span>
+          <span style={{ color: "var(--ink-3)", flexShrink: 0 }}>$</span>
           <span style={{ flex: 1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{install}</span>
           <span
-            style={{
-              flexShrink: 0, fontSize: ".58rem", letterSpacing: ".1em", textTransform: "uppercase",
-              color: copied ? "var(--lime)" : "var(--text-faint)",
-            }}
+            className="label"
+            style={{ flexShrink: 0, fontSize: ".54rem", color: copied ? "var(--accent)" : "var(--ink-3)" }}
           >
-            {copied ? "copied" : "copy"}
+            {copied ? "Copied" : "Copy"}
           </span>
         </button>
 
-        <motion.a
+        <a
+          className="link mono"
           href={`https://pub.dev/packages/${pkg.name}`}
           target="_blank"
           rel="noopener"
-          whileHover={{ x: 3 }}
-          style={{
-            display: "inline-flex", alignItems: "center", gap: ".45rem",
-            fontSize: ".78rem", fontWeight: 600, textDecoration: "none", color: accent,
-          }}
+          style={{ fontSize: ".78rem", fontWeight: 500 }}
         >
           View on pub.dev ↗
-        </motion.a>
+        </a>
       </div>
     </motion.article>
   );
@@ -243,7 +181,12 @@ export default function PackagesView({ packages }: { packages: PubPackage[] }) {
 
       <div
         className="pkg-grid"
-        style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "1.1rem" }}
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(2, 1fr)",
+          borderTop: "1px solid var(--line)",
+          borderLeft: "1px solid var(--line)",
+        }}
       >
         {packages.map((p, i) => <PackageCard key={p.name} pkg={p} index={i} />)}
       </div>
