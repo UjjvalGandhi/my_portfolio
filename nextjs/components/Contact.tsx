@@ -36,21 +36,19 @@ export default function Contact() {
         />
 
         <Reveal>
-          <p
-            style={{
-              fontSize: "1.05rem", lineHeight: 1.75, color: "var(--on-ink-2)",
-              maxWidth: 520, marginBottom: "2.75rem", marginTop: "-2rem",
-            }}
-          >
-            Open to full-time roles and freelance work — full stack, Flutter, or Next.js and Node.
-            Based in {profile.location}. Remote friendly.
-          </p>
-        </Reveal>
+          <div className="contact-intro" style={{ marginTop: "-2rem", marginBottom: "4rem" }}>
+            <p
+              className="measure"
+              style={{ fontSize: "1.05rem", lineHeight: 1.75, color: "var(--on-ink-2)" }}
+            >
+              Open to full-time roles and freelance work — full stack, Flutter, or Next.js and Node.
+              Based in {profile.location}. Remote friendly.
+            </p>
 
-        <Reveal delay={1}>
-          <div className="hero-cta" style={{ display: "flex", gap: ".6rem", flexWrap: "wrap", marginBottom: "4rem" }}>
-            <Button variant="on-ink" href={`mailto:${profile.email}`}>Start a conversation</Button>
-            <Button variant="on-ink-ghost" href={profile.resumeUrl} target="_blank">Résumé (PDF)</Button>
+            <div className="hero-cta" style={{ display: "flex", gap: ".6rem", flexWrap: "wrap", alignItems: "flex-start" }}>
+              <Button variant="on-ink" href={`mailto:${profile.email}`}>Start a conversation</Button>
+              <Button variant="on-ink-ghost" href={profile.resumeUrl} target="_blank">Résumé (PDF)</Button>
+            </div>
           </div>
         </Reveal>
 
@@ -58,7 +56,6 @@ export default function Contact() {
           className="contact-grid"
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
             borderTop: "1px solid var(--line-ink)",
             borderLeft: "1px solid var(--line-ink)",
           }}

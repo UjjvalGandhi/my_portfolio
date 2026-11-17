@@ -1,6 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
-import { projects, type Project } from "@/lib/data";
+import { projects, profile, type Project } from "@/lib/data";
 import { SectionHeading, Tag } from "./ui";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
@@ -12,9 +12,8 @@ function Card({ p, index }: { p: Project; index: number }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-60px" }}
       transition={{ duration: 0.55, delay: (index % 2) * 0.07, ease: EASE }}
-      className="panel-hover"
+      className={`panel-hover${p.featured ? " proj-featured" : ""}`}
       style={{
-        gridColumn: p.featured ? "span 2" : "span 1",
         padding: "2rem 1.75rem",
         borderRight: "1px solid var(--line)",
         borderBottom: "1px solid var(--line)",
@@ -116,12 +115,46 @@ export default function Projects() {
         className="proj-grid"
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(2, 1fr)",
           borderTop: "1px solid var(--line)",
           borderLeft: "1px solid var(--line)",
         }}
       >
         {projects.map((p, i) => <Card key={p.num} p={p} index={i} />)}
+
+        {/* Sixth cell — keeps the card count divisible and gives the grid
+            somewhere to send people next. */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.5, delay: 0.1, ease: EASE }}
+          style={{
+            padding: "2rem 1.75rem",
+            borderRight: "1px solid var(--line)",
+            borderBottom: "1px solid var(--line)",
+            background: "var(--bg-alt)",
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          <span className="label" style={{ marginBottom: "1.5rem" }}>More</span>
+          <h3 className="display" style={{ fontSize: "1.35rem", marginBottom: ".9rem" }}>
+            Source on GitHub
+          </h3>
+          <p className="measure" style={{ fontSize: ".92rem", lineHeight: 1.7, color: "var(--ink-2)", marginBottom: "1.5rem" }}>
+            Client work stays private, but the packages, experiments and the code behind this site
+            are all public.
+          </p>
+          <a
+            className="link mono"
+            href={profile.github}
+            target="_blank"
+            rel="noopener"
+            style={{ marginTop: "auto", fontSize: ".78rem", fontWeight: 500 }}
+          >
+            github.com/UjjvalGandhi ↗
+          </a>
+        </motion.div>
       </div>
     </section>
   );

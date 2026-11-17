@@ -88,9 +88,9 @@ export function SectionHeading({
         <h2
           className="display"
           style={{
-            fontSize: "clamp(2.3rem, 5.2vw, 4rem)",
+            fontSize: "clamp(2.3rem, 4.6vw, 5.2rem)",
             color: onInk ? "var(--on-ink)" : "var(--ink)",
-            maxWidth: 900,
+            maxWidth: "20ch",
           }}
         >
           {title}

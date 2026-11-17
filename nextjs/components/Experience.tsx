@@ -13,13 +13,7 @@ function JobBlock({ job, index }: { job: Job; index: number }) {
       viewport={{ once: true, margin: "-70px" }}
       transition={{ duration: 0.6, delay: index * 0.08, ease: EASE }}
       className="exp-row"
-      style={{
-        display: "grid",
-        gridTemplateColumns: "200px 1fr",
-        gap: "3rem",
-        padding: "2.5rem 0",
-        borderTop: "1px solid var(--line)",
-      }}
+      style={{ padding: "2.5rem 0", borderTop: "1px solid var(--line)" }}
     >
       {/* meta column */}
       <div>
@@ -52,7 +46,8 @@ function JobBlock({ job, index }: { job: Job; index: number }) {
           <span className="mono" style={{ fontSize: ".74rem", color: "var(--ink-3)" }}>{job.location}</span>
         </div>
 
-        <p style={{ fontSize: ".98rem", lineHeight: 1.7, color: "var(--ink-2)", marginBottom: "1.75rem", maxWidth: 620 }}>
+        <p className="measure"
+          style={{ fontSize: ".98rem", lineHeight: 1.7, color: "var(--ink-2)", marginBottom: "1.75rem" }}>
           {job.summary}
         </p>
 
@@ -61,7 +56,6 @@ function JobBlock({ job, index }: { job: Job; index: number }) {
             listStyle: "none",
             display: "grid",
             borderTop: "1px solid var(--line)",
-            marginBottom: "1.75rem",
           }}
         >
           {job.points.map((p, i) => (
@@ -88,6 +82,13 @@ function JobBlock({ job, index }: { job: Job; index: number }) {
           ))}
         </ul>
 
+      </div>
+
+      {/* lane 3 — the stack, as a column on wide screens */}
+      <div className="exp-stack">
+        <span className="label" style={{ display: "block", marginBottom: ".9rem", fontSize: ".56rem" }}>
+          Stack
+        </span>
         <div style={{ display: "flex", flexWrap: "wrap", gap: ".4rem" }}>
           {job.stack.map(s => <Tag key={s} label={s} />)}
         </div>
@@ -122,11 +123,11 @@ export default function Experience() {
           {education.map(e => (
             <div
               key={e.short}
-              className="exp-row"
+              className="edu-row"
               style={{
                 display: "grid",
-                gridTemplateColumns: "200px 1fr auto",
-                gap: "3rem",
+                gridTemplateColumns: "minmax(150px, 0.5fr) minmax(0, 3fr) auto",
+                gap: "clamp(1.5rem, 3vw, 3.5rem)",
                 alignItems: "baseline",
                 padding: "1.5rem 0",
                 borderBottom: "1px solid var(--line)",

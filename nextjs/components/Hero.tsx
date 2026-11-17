@@ -57,15 +57,7 @@ export default function Hero() {
 
   return (
     <section id="top" style={{ paddingTop: "10rem", paddingBottom: "6rem", position: "relative" }}>
-      <div
-        className="hero-grid"
-        style={{
-          display: "grid",
-          gridTemplateColumns: "1.08fr 1fr",
-          gap: "4rem",
-          alignItems: "start",
-        }}
-      >
+      <div className="hero-grid">
         {/* ───────────── LEFT ───────────── */}
         <div>
           <motion.div
@@ -84,7 +76,7 @@ export default function Hero() {
           <motion.h1
             {...fade(0.06)}
             className="display"
-            style={{ fontSize: "clamp(2.9rem, 7vw, 5.6rem)", marginBottom: "1.75rem" }}
+            style={{ fontSize: "clamp(2.9rem, 6.2vw, 7.2rem)", marginBottom: "1.75rem" }}
           >
             Full stack developer
             <br />
@@ -113,10 +105,8 @@ export default function Hero() {
 
           <motion.p
             {...fade(0.2)}
-            style={{
-              maxWidth: 480, fontSize: "1.02rem", lineHeight: 1.75,
-              color: "var(--ink-2)", marginBottom: "2.5rem",
-            }}
+            className="measure"
+            style={{ fontSize: "1.05rem", lineHeight: 1.75, color: "var(--ink-2)", marginBottom: "2.5rem" }}
           >
             {profile.summary}
           </motion.p>
@@ -137,33 +127,6 @@ export default function Hero() {
             </Button>
           </motion.div>
 
-          <motion.div
-            {...fade(0.36)}
-            className="hero-meta"
-            style={{
-              display: "flex", gap: "2.5rem", flexWrap: "wrap",
-              paddingTop: "1.5rem", borderTop: "1px solid var(--line)",
-            }}
-          >
-            {[
-              { k: "Email",    v: profile.email,  h: `mailto:${profile.email}` },
-              { k: "GitHub",   v: "UjjvalGandhi", h: profile.github },
-              { k: "LinkedIn", v: "ujjvalgandhi", h: profile.linkedin },
-            ].map(x => (
-              <span key={x.k} style={{ display: "grid", gap: ".3rem" }}>
-                <span className="label" style={{ fontSize: ".6rem" }}>{x.k}</span>
-                <a
-                  className="link mono"
-                  href={x.h}
-                  target={x.h.startsWith("http") ? "_blank" : undefined}
-                  rel={x.h.startsWith("http") ? "noopener" : undefined}
-                  style={{ fontSize: ".78rem" }}
-                >
-                  {x.v}
-                </a>
-              </span>
-            ))}
-          </motion.div>
         </div>
 
         {/* ───────────── RIGHT: build diagram ───────────── */}
@@ -286,6 +249,37 @@ export default function Hero() {
             <span style={{ color: "var(--ink-3)", whiteSpace: "nowrap" }}>42.6s</span>
           </div>
         </motion.div>
+
+          <motion.div
+            {...fade(0.36)}
+            className="hero-meta"
+            style={{
+              gridColumn: "1 / -1",
+              display: "flex", justifyContent: "space-between",
+              gap: "clamp(1.5rem, 4vw, 4rem)", flexWrap: "wrap",
+              paddingTop: "1.5rem", marginTop: "1rem",
+              borderTop: "1px solid var(--line)",
+            }}
+          >
+            {[
+              { k: "Email",    v: profile.email,  h: `mailto:${profile.email}` },
+              { k: "GitHub",   v: "UjjvalGandhi", h: profile.github },
+              { k: "LinkedIn", v: "ujjvalgandhi", h: profile.linkedin },
+            ].map(x => (
+              <span key={x.k} style={{ display: "grid", gap: ".3rem" }}>
+                <span className="label" style={{ fontSize: ".6rem" }}>{x.k}</span>
+                <a
+                  className="link mono"
+                  href={x.h}
+                  target={x.h.startsWith("http") ? "_blank" : undefined}
+                  rel={x.h.startsWith("http") ? "noopener" : undefined}
+                  style={{ fontSize: ".78rem" }}
+                >
+                  {x.v}
+                </a>
+              </span>
+            ))}
+          </motion.div>
       </div>
     </section>
   );

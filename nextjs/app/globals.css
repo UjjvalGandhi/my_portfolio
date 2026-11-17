@@ -9,7 +9,6 @@
   /* canvas */
   --bg:        #FFFFFF;
   --bg-alt:    #FAFAFA;
-  --bg-field:  #F2F2F4;   /* the ground the content sheet sits on */
   --bg-ink:    #0A0A0A;   /* inverted blocks */
 
   /* type */
@@ -30,8 +29,8 @@
   --accent-bg: #EFF6FF;
 
   /* geometry */
-  --maxw:  1200px;
-  --gut:   2.5rem;
+  --maxw:  2160px;                        /* safety valve on 5K, not a column */
+  --gut:   clamp(1.25rem, 3vw, 3.5rem);
   --ease:  cubic-bezier(0.22, 1, 0.36, 1);
 }
 
@@ -44,7 +43,7 @@ html {
 }
 
 body {
-  background: var(--bg-field);
+  background: var(--bg);
   color: var(--ink);
   font-family: var(--font-inter), system-ui, -apple-system, sans-serif;
   font-feature-settings: "cv02", "cv03", "cv04", "cv11", "ss01";
@@ -88,9 +87,6 @@ body {
   padding: 0 var(--gut);
   display: grid;
   grid-template-columns: repeat(12, 1fr);
-  /* The white sheet. Everything in .shell sits on this; the column
-     rails are drawn straight onto it. */
-  background: var(--bg);
 }
 
 .grid-rails__col {
@@ -259,86 +255,107 @@ body {
 }
 
 /* ──────────────────────────────────────────────────────────────
+   WIDE-GRID LANES
+   The page is full width, so sections gain lanes as the viewport
+   grows rather than stretching a single column. Prose is capped by
+   measure inside its lane, never by leaving the page half empty.
+   ────────────────────────────────────────────────────────────── */
+.measure { max-width: 62ch; }
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: clamp(2rem, 4vw, 5rem);
+  align-items: start;
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.8fr) minmax(0, 1.15fr);
+  gap: clamp(2rem, 3.5vw, 4rem);
+  align-items: start;
+}
+
+.exp-row {
+  display: grid;
+  grid-template-columns: minmax(150px, 0.5fr) minmax(0, 2.6fr) minmax(0, 0.9fr);
+  gap: clamp(1.5rem, 3vw, 3.5rem);
+}
+
+/* Column counts are pinned to divisors of each grid's item count, so a
+   row never ends ragged. auto-fit would pick, say, 4 columns for 6 cards
+   and leave two empty cells — which is the blank space this layout is
+   meant to remove. Counts: skills 6, projects 6, packages 3, contact 4. */
+.skills-grid, .proj-grid, .pkg-grid, .contact-grid { grid-template-columns: 1fr; }
+
+@media (min-width: 640px) {
+  .skills-grid, .contact-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (min-width: 760px) {
+  .proj-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (min-width: 1100px) {
+  .skills-grid { grid-template-columns: repeat(3, 1fr); }
+  .proj-grid   { grid-template-columns: repeat(3, 1fr); }
+  .contact-grid{ grid-template-columns: repeat(4, 1fr); }
+}
+@media (min-width: 1250px) {
+  .pkg-grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (min-width: 1700px) {
+  /* 4 tracks with the two featured cards at span 2 is exactly 8 units
+     over 6 cards — two full rows. */
+  .proj-grid { grid-template-columns: repeat(4, 1fr); }
+  .proj-featured { grid-column: span 2; }
+}
+@media (min-width: 1800px) {
+  .skills-grid { grid-template-columns: repeat(6, 1fr); }
+}
+
+/* ──────────────────────────────────────────────────────────────
    RESPONSIVE
    ────────────────────────────────────────────────────────────── */
-@media (max-width: 1024px) {
-  :root { --gut: 2rem; }
-  .section { padding-block: 5rem; }
-  .hero-grid { grid-template-columns: 1fr !important; gap: 3rem !important; }
-  .hero-visual { max-width: 580px; }
+@media (max-width: 1500px) {
+  .about-grid { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); }
+  .about-note { grid-column: 1 / -1; }
+}
+
+@media (max-width: 1150px) {
+  .section { padding-block: 5.5rem; }
+  .hero-grid { grid-template-columns: 1fr; }
+  .hero-visual { max-width: 620px; }
+  .exp-row { grid-template-columns: minmax(140px, 0.6fr) minmax(0, 2.4fr); }
+  .exp-stack { grid-column: 2; }
 }
 
 @media (max-width: 900px) {
   .nav-links { display: none !important; }
-  .about-grid,
-  .skills-grid,
-  .proj-grid,
-  .pkg-grid,
-  .exp-row { grid-template-columns: 1fr !important; }
-  .exp-row { gap: .75rem !important; }
+  .about-grid { grid-template-columns: 1fr; }
+  .exp-row { grid-template-columns: 1fr; gap: .75rem; }
+  .exp-stack { grid-column: 1; }
 }
 
 @media (max-width: 640px) {
-  :root { --gut: 1.25rem; }
-  .shell { border-left: none; border-right: none; }
   .section { padding-block: 4rem; }
+  .shell { border-left: none; border-right: none; }
   .stat-grid { grid-template-columns: 1fr 1fr !important; }
-  .contact-grid { grid-template-columns: 1fr !important; }
-  .hero-cta { flex-direction: column !important; align-items: stretch !important; }
-  .hero-cta > * { justify-content: center !important; }
-  .hero-meta { flex-direction: column !important; gap: .6rem !important; align-items: flex-start !important; }
-  .foot-row { flex-direction: column !important; gap: 1rem !important; align-items: flex-start !important; }
+  .hero-cta { flex-direction: column; align-items: stretch; }
+  .hero-cta > * { justify-content: center; }
+  .hero-meta { flex-direction: column; gap: .6rem; align-items: flex-start; }
+  .foot-row { flex-direction: column; gap: 1rem; align-items: flex-start; }
 }
 
-/* ──────────────────────────────────────────────────────────────
-   SIDE RAILS
-   On wide displays the content sheet leaves large margins. Rather
-   than leave them blank, they carry vertical type and a scroll
-   readout, so the page reads as a sheet on a measured ground.
-   ────────────────────────────────────────────────────────────── */
-.side-rails {
-  position: fixed;
-  inset: 0;
-  z-index: 2;
-  pointer-events: none;
-  display: none;
+@media (max-width: 900px) {
+  .edu-row { grid-template-columns: 1fr auto !important; gap: .75rem 1rem !important; }
+  .edu-row > span:first-child { grid-column: 1 / -1; }
 }
 
-.side-rail {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: calc((100% - var(--maxw)) / 2);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 2rem;
-}
-.side-rail--left  { left: 0; }
-.side-rail--right { right: 0; flex-direction: column; }
-
-.side-rail__text {
-  writing-mode: vertical-rl;
-  font-size: 0.62rem;
-  letter-spacing: 0.24em;
-  color: var(--ink-3);
-  white-space: nowrap;
-}
-.side-rail--left .side-rail__text { transform: rotate(180deg); }
-
-.side-rail__pct {
-  position: absolute;
-  bottom: 2.5rem;
-  font-size: 0.62rem;
-  letter-spacing: 0.1em;
-  color: var(--ink-3);
-}
-.side-rail__pct::after {
-  content: "%";
-  opacity: 0.5;
-}
-
-/* Only once each margin can hold the type without crowding the sheet. */
-@media (min-width: 1480px) {
-  .side-rails { display: block; }
+/* Contact: intro and actions side by side once there is room. */
+.contact-intro { display: grid; gap: 2rem; }
+@media (min-width: 1100px) {
+  .contact-intro {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: start;
+    gap: clamp(2rem, 6vw, 6rem);
+  }
 }

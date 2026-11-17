@@ -20,7 +20,6 @@ export default function Skills() {
         className="skills-grid"
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
           borderTop: "1px solid var(--line)",
           borderLeft: "1px solid var(--line)",
         }}

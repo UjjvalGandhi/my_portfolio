@@ -169,6 +169,8 @@ function PackageCard({ pkg, index }: { pkg: PubPackage; index: number }) {
 }
 
 export default function PackagesView({ packages }: { packages: PubPackage[] }) {
+  const totalDownloads = packages.reduce((n, p) => n + p.downloads, 0);
+
   return (
     <section id="packages" className="section">
       <SectionHeading
@@ -183,12 +185,59 @@ export default function PackagesView({ packages }: { packages: PubPackage[] }) {
         className="pkg-grid"
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(2, 1fr)",
           borderTop: "1px solid var(--line)",
           borderLeft: "1px solid var(--line)",
         }}
       >
         {packages.map((p, i) => <PackageCard key={p.name} pkg={p} index={i} />)}
+
+        {/* Third cell so a wider row resolves instead of trailing a gap. */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.5, delay: 0.16, ease: EASE }}
+          style={{
+            padding: "1.9rem 1.75rem",
+            borderRight: "1px solid var(--line)",
+            borderBottom: "1px solid var(--line)",
+            background: "var(--bg-alt)",
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          <span className="label" style={{ marginBottom: "1.5rem" }}>In total</span>
+
+          <div style={{ display: "grid", gap: "1.4rem", marginBottom: "auto" }}>
+            <span style={{ display: "grid", gap: ".3rem" }}>
+              <span className="display" style={{ fontSize: "2.1rem", color: "var(--ink)" }}>
+                {totalDownloads.toLocaleString("en-US")}
+              </span>
+              <span className="label" style={{ fontSize: ".56rem" }}>Downloads, last 30 days</span>
+            </span>
+            <span style={{ display: "grid", gap: ".3rem" }}>
+              <span className="display" style={{ fontSize: "2.1rem", color: "var(--ink)" }}>
+                {packages.length}
+              </span>
+              <span className="label" style={{ fontSize: ".56rem" }}>Published packages</span>
+            </span>
+          </div>
+
+          <p className="measure" style={{ fontSize: ".88rem", lineHeight: 1.7, color: "var(--ink-2)", margin: "1.75rem 0 1.25rem" }}>
+            Both are MIT licensed and maintained in the open, with the native iOS side written in
+            Swift against UIKit.
+          </p>
+
+          <a
+            className="link mono"
+            href="https://pub.dev/publishers/ujjvalgandhi.online/packages"
+            target="_blank"
+            rel="noopener"
+            style={{ fontSize: ".78rem", fontWeight: 500 }}
+          >
+            All packages ↗
+          </a>
+        </motion.div>
       </div>
     </section>
   );

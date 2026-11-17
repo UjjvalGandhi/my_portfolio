@@ -54,7 +54,7 @@ export default function Navbar() {
         position: "fixed",
         top: 0, left: 0, right: 0,
         zIndex: 200,
-        background: "transparent",
+        background: "var(--bg)",
         borderBottom: "1px solid var(--line)",
       }}
     >
