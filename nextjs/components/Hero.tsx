@@ -180,7 +180,7 @@ export default function Hero() {
               <PrimaryButton onClick={() => document.getElementById("work")?.scrollIntoView({ behavior: "smooth" })}>
                 View work →
               </PrimaryButton>
-              <GhostButton href="/resume.pdf" target="_blank">
+              <GhostButton href={profile.resumeUrl} target="_blank">
                 Résumé ↓
               </GhostButton>
               <GhostButton href={profile.github} target="_blank">

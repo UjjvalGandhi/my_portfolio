@@ -17,6 +17,18 @@ export const profile = {
   siteLabel: "ujjvalgandhi.online",
   linkedin: "https://linkedin.com/in/ujjvalgandhi",
   github: "https://github.com/UjjvalGandhi",
+
+  /* ── Résumé link ──────────────────────────────────────────────
+     Cloudflare sits in front of this site, caches .pdf at the edge
+     by default, and rewrites Cache-Control to its 4-hour Browser
+     Cache TTL. A fixed /resume.pdf URL therefore keeps serving the
+     previous file to anyone who already fetched it.
+
+     The ?v= stamp makes each new résumé a new URL, which both the
+     browser and the Cloudflare edge treat as a fresh object.
+
+     >>> BUMP THIS DATE WHENEVER public/resume.pdf CHANGES. <<<     */
+  resumeUrl: "/resume.pdf?v=2026-11-17",
   summary:
     "Full stack developer with two years of experience building cross-platform apps in Flutter, web apps in Next.js, and REST APIs in Node.js and Express. I ship Android, iOS, web and desktop builds from one Dart codebase with GetX and CI/CD, and deploy APIs on AWS Lambda and Oracle Cloud.",
   summaryTail:

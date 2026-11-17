@@ -73,7 +73,7 @@ export default function Contact() {
           <Reveal delay={3}>
             <div className="hero-cta" style={{ display: "flex", gap: ".75rem", flexWrap: "wrap", marginBottom: "3.2rem" }}>
               <PrimaryButton href={`mailto:${profile.email}`}>Start a conversation →</PrimaryButton>
-              <GhostButton href="/resume.pdf" target="_blank">Download résumé ↓</GhostButton>
+              <GhostButton href={profile.resumeUrl} target="_blank">Download résumé ↓</GhostButton>
             </div>
           </Reveal>
 

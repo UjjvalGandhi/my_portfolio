@@ -36,7 +36,7 @@ export default function Footer() {
             { label: "GitHub", href: profile.github },
             { label: "LinkedIn", href: profile.linkedin },
             { label: "pub.dev", href: "https://pub.dev/publishers/ujjvalgandhi.online/packages" },
-            { label: "Résumé", href: "/resume.pdf" },
+            { label: "Résumé", href: profile.resumeUrl },
           ].map(l => (
             <a
               key={l.label}
