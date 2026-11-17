@@ -1,45 +1,65 @@
-import type { Metadata } from "next";
-import { Barlow_Condensed, DM_Sans } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import { Inter, Inter_Tight, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
-const barlowCondensed = Barlow_Condensed({
+const inter = Inter({
   subsets: ["latin"],
-  weight: ["400", "600", "700", "800", "900"],
-  variable: "--font-barlow",
+  variable: "--font-inter",
   display: "swap",
 });
 
-const dmSans = DM_Sans({
+const interTight = Inter_Tight({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
-  variable: "--font-dm-sans",
+  weight: ["500", "600", "700", "800"],
+  variable: "--font-display",
+  display: "swap",
+});
+
+const mono = JetBrains_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  variable: "--font-mono",
   display: "swap",
 });
 
 const BASE_URL = "https://ujjvalgandhi.online";
 
+const TITLE = "Ujjawal Gandhi — Full Stack Developer | Flutter, Next.js & Node.js";
+const DESCRIPTION =
+  "Ujjawal Gandhi is a full stack developer in Anand, Gujarat, India. Cross-platform apps in Flutter, web apps in Next.js, and REST APIs in Node.js & Express deployed on AWS Lambda and Oracle Cloud. Author of open-source Flutter packages on pub.dev.";
+
+export const viewport: Viewport = {
+  themeColor: "#07070B",
+  colorScheme: "dark",
+};
+
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
   title: {
-    default: "Ujjawal Gandhi — Flutter Developer | Android, iOS, Web & Desktop",
+    default: TITLE,
     template: "%s | Ujjawal Gandhi",
   },
-  description:
-    "Ujjawal Gandhi is a Flutter developer based in Anand, Gujarat, India. Building cross-platform apps for Android, iOS, Web & Desktop using Flutter, Dart, Firebase, and GetX.",
+  description: DESCRIPTION,
   keywords: [
+    "Full stack developer",
+    "Full stack developer India",
     "Flutter developer",
+    "Next.js developer",
+    "Node.js developer",
+    "React developer India",
     "Dart developer",
-    "Flutter developer India",
-    "Flutter developer Gujarat",
     "cross-platform app developer",
     "Android developer",
     "iOS developer",
+    "AWS Lambda Node.js",
+    "Oracle Cloud developer",
+    "Express Sequelize MySQL",
     "Firebase Flutter",
     "GetX Flutter",
-    "mobile app developer Anand",
+    "Flutter developer Gujarat",
+    "developer Anand Gujarat",
     "Ujjawal Gandhi",
     "ujjvalgandhi",
-    "Flutter freelancer India",
     "Flutter package author",
     "pub.dev packages",
     "liquid_glass_bottom_nav_native",
@@ -52,33 +72,31 @@ export const metadata: Metadata = {
   publisher: "Ujjawal Gandhi",
   category: "technology",
 
-  alternates: {
-    canonical: BASE_URL,
-  },
+  alternates: { canonical: BASE_URL },
 
   openGraph: {
     type: "website",
     locale: "en_IN",
     url: BASE_URL,
-    siteName: "Ujjawal Gandhi — Flutter Developer",
-    title: "Ujjawal Gandhi — Flutter Developer | Android, iOS, Web & Desktop",
+    siteName: "Ujjawal Gandhi — Full Stack Developer",
+    title: TITLE,
     description:
-      "Flutter developer building beautiful cross-platform apps for Android, iOS, Web & Desktop. Based in Anand, Gujarat. Open to full-time & freelance roles.",
+      "Full stack developer building cross-platform apps in Flutter, web apps in Next.js, and REST APIs in Node.js on AWS Lambda & Oracle Cloud. Open to full-time and freelance work.",
     images: [
       {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Ujjawal Gandhi — Flutter Developer",
+        alt: "Ujjawal Gandhi — Full Stack Developer",
       },
     ],
   },
 
   twitter: {
     card: "summary_large_image",
-    title: "Ujjawal Gandhi — Flutter Developer",
+    title: "Ujjawal Gandhi — Full Stack Developer",
     description:
-      "Building beautiful cross-platform Flutter apps for Android, iOS, Web & Desktop.",
+      "Flutter, Next.js and Node.js. One codebase to iOS, Android, Web and Desktop — APIs on AWS Lambda and Oracle Cloud.",
     images: ["/og-image.png"],
   },
 
@@ -93,16 +111,14 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
-
-  verification: {
-    // Add your Google Search Console verification code here after registering
-    // google: "YOUR_GOOGLE_VERIFICATION_CODE",
-  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${barlowCondensed.variable} ${dmSans.variable}`}>
+    <html
+      lang="en"
+      className={`${inter.variable} ${interTight.variable} ${mono.variable}`}
+    >
       <body>{children}</body>
     </html>
   );

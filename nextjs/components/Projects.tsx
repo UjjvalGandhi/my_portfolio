@@ -1,116 +1,157 @@
 "use client";
-import { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
-import { SiFlutter, SiFirebase } from "react-icons/si";
-import { MdInventory2, MdSensors, MdSchool } from "react-icons/md";
-import { FaPlaceOfWorship } from "react-icons/fa6";
+import { motion } from "framer-motion";
+import { projects, type Project } from "@/lib/data";
+import { SectionHeading, Chip } from "./ui";
 
-const tagColor: Record<string, React.CSSProperties> = {
-  r: { background:"rgba(227,83,54,.1)",  color:"var(--red)",   border:"1px solid rgba(227,83,54,.2)"   },
-  s: { background:"rgba(244,164,96,.1)", color:"#c07828",      border:"1px solid rgba(244,164,96,.25)" },
-  b: { background:"rgba(160,82,45,.08)", color:"var(--brown)", border:"1px solid rgba(160,82,45,.18)" },
-  k: { background:"rgba(28,10,4,.05)",   color:"var(--ink2)",  border:"1px solid rgba(28,10,4,.12)"   },
-};
+const EASE = [0.22, 1, 0.36, 1] as const;
 
-const Tag = ({ label, type }: { label: string; type: string }) => (
-  <span style={{ fontSize:".65rem", fontWeight:700, letterSpacing:".07em", textTransform:"uppercase", padding:".2rem .65rem", borderRadius:"2px", ...tagColor[type] }}>{label}</span>
-);
-
-const projects = [
-  {
-    num: "01", icon: <FaPlaceOfWorship size={32} color="#A0522D" />,
-    name: "Parabhakti",
-    desc: "Flutter app to centrally track temple devotee meal counts across multiple states with real-time admin notifications.",
-    tags: [["Flutter","r"],["Real-time","s"],["Multi-state","b"]],
-  },
-  {
-    num: "02", icon: <MdInventory2 size={32} color="#E35336" />,
-    name: "AVD Kitchen",
-    desc: "Flutter-based inventory app for category-wise/godown-wise daily grocery inflow tracking with Firebase Cloud Messaging.",
-    tags: [["Flutter","r"],["FCM","s"],["Inventory","k"]],
-  },
-  {
-    num: "03", icon: <MdSchool size={32} color="#4A90D9" />,
-    name: "Online Course Registration",
-    desc: "Course registration system using PHP, XAMPP, and MySQL for secure enrollment and real-time updates.",
-    tags: [["PHP","r"],["MySQL","s"],["Web","b"]],
-  },
-  {
-    num: "04", icon: <MdSensors size={32} color="#6b3a1f" />,
-    name: "Smart Door Lock System",
-    desc: "IoT lock integrating fingerprint, RFID, push-button control, and a Flutter app using Embedded C.",
-    tags: [["Flutter","r"],["Embedded C","b"],["IoT","s"]],
-  },
-];
-
-function ProjectCard({ p, index }: { p: typeof projects[0]; index: number }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start 92%", "start 40%"],
-  });
-
-  // Alternating: even cards from left, odd from right
-  const xStart = index % 2 === 0 ? -40 : 40;
-  const x        = useTransform(scrollYProgress, [0, 1], [xStart, 0]);
-  const opacity  = useTransform(scrollYProgress, [0, 0.65], [0, 1]);
-  const rotateY  = useTransform(scrollYProgress, [0, 1], [index % 2 === 0 ? -18 : 18, 0]);
-  const scale    = useTransform(scrollYProgress, [0, 1], [0.88, 1]);
+function Card({ p, index }: { p: Project; index: number }) {
+  const featured = Boolean(p.featured);
 
   return (
-    <motion.div
-      ref={ref}
+    <motion.article
+      initial={{ opacity: 0, y: 32 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-60px" }}
+      transition={{ duration: 0.7, delay: (index % 2) * 0.09, ease: EASE }}
+      whileHover={{ y: -5 }}
+      className="glass glass-hover"
       style={{
-        x, opacity, rotateY, scale,
-        background:"var(--card)", padding:"2rem", position:"relative",
-        overflow:"hidden", cursor:"default",
-        transformStyle:"preserve-3d", perspective:800,
+        gridColumn: featured ? "span 2" : "span 1",
+        padding: featured ? "2.2rem 2.2rem 2rem" : "1.8rem",
+        position: "relative",
+        overflow: "hidden",
+        display: "flex",
+        flexDirection: "column",
       }}
-      whileHover={{ backgroundColor:"#EDEBD0", y:-6, transition:{ duration:0.25 } }}
     >
-      <span style={{ position:"absolute", top:".5rem", right:"1rem", fontFamily:"var(--font-barlow)", fontWeight:900, fontSize:"5rem", color:"var(--ink)", opacity:0.05, lineHeight:1 }}>{p.num}</span>
-      <div style={{ marginBottom:"1rem" }}>{p.icon}</div>
-      <div style={{ fontFamily:"var(--font-barlow)", fontWeight:800, fontSize:"1.5rem", letterSpacing:".03em", marginBottom:".5rem", color:"var(--ink)" }}>{p.name}</div>
-      <div style={{ fontSize:".83rem", color:"var(--ink2)", lineHeight:1.7, marginBottom:"1.25rem" }}>{p.desc}</div>
-      <div style={{ display:"flex", flexWrap:"wrap", gap:".35rem" }}>
-        {p.tags.map(([label, type]) => <Tag key={label} label={label} type={type} />)}
+      {/* corner wash */}
+      <div
+        aria-hidden
+        style={{
+          position: "absolute", top: 0, right: 0, width: 280, height: 220,
+          background: `radial-gradient(ellipse at 100% 0%, ${p.accent}22, transparent 68%)`,
+          pointerEvents: "none",
+        }}
+      />
+      {/* watermark number */}
+      <span
+        aria-hidden
+        style={{
+          position: "absolute", top: "-.4rem", right: "1rem",
+          fontFamily: "var(--font-display)", fontWeight: 700,
+          fontSize: featured ? "7rem" : "5rem", lineHeight: 1,
+          color: "#fff", opacity: 0.035, letterSpacing: "-.05em",
+        }}
+      >
+        {p.num}
+      </span>
+
+      <div style={{ position: "relative", display: "flex", alignItems: "center", gap: ".6rem", flexWrap: "wrap", marginBottom: "1rem" }}>
+        <span
+          className="mono"
+          style={{
+            fontSize: ".64rem", letterSpacing: ".16em", textTransform: "uppercase",
+            color: p.accent,
+          }}
+        >
+          {p.tagline}
+        </span>
+        {p.badge && (
+          <span
+            className="mono"
+            style={{
+              fontSize: ".58rem", letterSpacing: ".12em", textTransform: "uppercase",
+              padding: ".22rem .55rem", borderRadius: 999,
+              border: "1px solid rgba(255,255,255,.16)", background: "rgba(255,255,255,.05)",
+              color: "var(--text-dim)",
+            }}
+          >
+            {p.badge}
+          </span>
+        )}
       </div>
-    </motion.div>
+
+      <h3
+        style={{
+          position: "relative",
+          fontFamily: "var(--font-display)", fontWeight: 650,
+          fontSize: featured ? "clamp(1.6rem, 3vw, 2.2rem)" : "1.35rem",
+          letterSpacing: "-.03em", color: "var(--text)", marginBottom: ".9rem",
+        }}
+      >
+        {p.name}
+      </h3>
+
+      <p
+        style={{
+          position: "relative",
+          fontSize: ".92rem", lineHeight: 1.76, color: "var(--text-dim)",
+          marginBottom: p.backend ? "1rem" : "1.5rem",
+          maxWidth: featured ? 700 : undefined,
+        }}
+      >
+        {p.body}
+      </p>
+
+      {p.backend && (
+        <div
+          style={{
+            position: "relative",
+            display: "grid", gridTemplateColumns: "auto 1fr", gap: ".75rem",
+            padding: ".85rem 1rem", borderRadius: 11, marginBottom: "1.5rem",
+            background: "rgba(255,255,255,.028)", border: "1px solid var(--stroke)",
+          }}
+        >
+          <span
+            className="mono"
+            style={{
+              fontSize: ".58rem", letterSpacing: ".14em", textTransform: "uppercase",
+              color: "var(--lime)", paddingTop: ".15rem",
+            }}
+          >
+            API
+          </span>
+          <span style={{ fontSize: ".85rem", lineHeight: 1.7, color: "var(--text-dim)" }}>{p.backend}</span>
+        </div>
+      )}
+
+      <div style={{ position: "relative", marginTop: "auto", display: "flex", flexWrap: "wrap", gap: ".4rem", alignItems: "center" }}>
+        {p.tags.map(t => <Chip key={t} label={t} />)}
+        {p.period && (
+          <span
+            className="mono"
+            style={{ marginLeft: "auto", fontSize: ".65rem", color: "var(--text-faint)", letterSpacing: ".04em", whiteSpace: "nowrap" }}
+          >
+            {p.period}
+          </span>
+        )}
+      </div>
+    </motion.article>
   );
 }
 
 export default function Projects() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start 80%", "start 20%"],
-  });
-  const headingY  = useTransform(scrollYProgress, [0, 1], [40, 0]);
-  const headingOp = useTransform(scrollYProgress, [0, 0.5], [0, 1]);
-
   return (
-    <section id="projects" className="sec-pad" ref={sectionRef} style={{ maxWidth:1100, margin:"0 auto", padding:"4.5rem 3rem", position:"relative", zIndex:2 }}>
-      <motion.div style={{ y: headingY, opacity: headingOp }}>
-        <p style={eyebrow}><span style={line} />Portfolio</p>
-        <h2 className="sec-title-size" style={secTitle}>APPS I <span style={{ WebkitTextStroke:"2px var(--ink)", color:"transparent" }}>BUILT</span></h2>
-      </motion.div>
+    <section id="work" className="section">
+      <SectionHeading
+        index="04"
+        eyebrow="Selected work"
+        title="Things I've"
+        accentWord="built"
+        lead="Production apps running across temples, warehouses and ERP floors — front end, API and deployment."
+      />
 
       <div
-        className="proj-grid-cols"
+        className="proj-grid"
         style={{
-          display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(260px,1fr))",
-          gap:"1px", background:"var(--border)", border:"1px solid var(--border)",
-          borderRadius:"10px", overflow:"hidden",
+          display: "grid",
+          gridTemplateColumns: "repeat(2, 1fr)",
+          gap: "1.1rem",
         }}
       >
-        {projects.map((p, i) => (
-          <ProjectCard key={p.num} p={p} index={i} />
-        ))}
+        {projects.map((p, i) => <Card key={p.num} p={p} index={i} />)}
       </div>
     </section>
   );
 }
-
-const eyebrow: React.CSSProperties = { display:"inline-flex", alignItems:"center", gap:".6rem", fontSize:".7rem", fontWeight:700, letterSpacing:".18em", textTransform:"uppercase", color:"var(--red)", marginBottom:".6rem" };
-const line: React.CSSProperties = { width:20, height:2, background:"var(--red)", display:"inline-block" };
-const secTitle: React.CSSProperties = { fontFamily:"var(--font-barlow)", fontWeight:900, fontSize:"clamp(2.8rem,6vw,5rem)", letterSpacing:".02em", lineHeight:0.92, marginBottom:"3rem", color:"var(--ink)" };

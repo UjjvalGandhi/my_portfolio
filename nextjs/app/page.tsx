@@ -1,30 +1,32 @@
-import Cursor         from "@/components/Cursor";
-import ProgressBar    from "@/components/ProgressBar";
-import Navbar         from "@/components/Navbar";
-import Hero           from "@/components/Hero";
-import MarqueeSection from "@/components/MarqueeSection";
-import Skills         from "@/components/Skills";
-import Experience     from "@/components/Experience";
-import Education      from "@/components/Education";
-import Projects       from "@/components/Projects";
-import Packages       from "@/components/Packages";
-import Contact        from "@/components/Contact";
-import Footer         from "@/components/Footer";
-import JsonLd         from "@/components/JsonLd";
+import Aurora      from "@/components/Aurora";
+import Cursor      from "@/components/Cursor";
+import ProgressBar from "@/components/ProgressBar";
+import Navbar      from "@/components/Navbar";
+import Hero        from "@/components/Hero";
+import Marquee     from "@/components/Marquee";
+import About       from "@/components/About";
+import Skills      from "@/components/Skills";
+import Experience  from "@/components/Experience";
+import Projects    from "@/components/Projects";
+import Packages    from "@/components/Packages";
+import Contact     from "@/components/Contact";
+import Footer      from "@/components/Footer";
+import JsonLd      from "@/components/JsonLd";
 
 export default function Home() {
   return (
     <>
       <JsonLd />
+      <Aurora />
       <Cursor />
       <ProgressBar />
       <Navbar />
       <main>
         <Hero />
-        <MarqueeSection />
+        <Marquee />
+        <About />
         <Skills />
         <Experience />
-        <Education />
         <Projects />
         <Packages />
         <Contact />

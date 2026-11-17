@@ -1,106 +1,103 @@
 "use client";
-import { useRef } from "react";
-import { motion, useScroll, useTransform, type MotionValue } from "framer-motion";
-import { SiFlutter, SiDart, SiFirebase, SiAndroidstudio, SiXcode, SiMongodb, SiPhp, SiPython } from "react-icons/si";
-import { FaAws } from "react-icons/fa6";
-import { TbApi, TbCpu } from "react-icons/tb";
-import { MdSettingsSuggest } from "react-icons/md";
+import { motion } from "framer-motion";
+import { skillGroups } from "@/lib/data";
+import { SectionHeading } from "./ui";
 
-const skills = [
-  { icon: <SiFlutter       size={28} color="#54C5F8" />, name: "Flutter"        },
-  { icon: <SiDart          size={28} color="#0175C2" />, name: "Dart"           },
-  { icon: <SiFirebase      size={28} color="#FFCA28" />, name: "Firebase"       },
-  { icon: <MdSettingsSuggest size={28} color="#E35336" />, name: "GetX"         },
-  { icon: <SiAndroidstudio size={28} color="#3DDC84" />, name: "Android Studio" },
-  { icon: <SiXcode         size={28} color="#1575F9" />, name: "Xcode"          },
-  { icon: <TbApi           size={28} color="#A0522D" />, name: "REST APIs"      },
-  { icon: <SiMongodb       size={28} color="#47A248" />, name: "MongoDB"        },
-  { icon: <TbCpu           size={28} color="#6b3a1f" />, name: "IoT / Embedded C" },
-  { icon: <SiPhp           size={28} color="#777BB4" />, name: "PHP"            },
-  { icon: <SiPython        size={28} color="#3776AB" />, name: "Python"         },
-  { icon: <FaAws           size={28} color="#FF9900" />, name: "AWS"            },
-];
-
-/* Cards stagger across this slice of the grid's scroll progress; each card's
-   own reveal takes the remainder. Keeps the last card finishing before 1. */
-const STAGGER_SPAN = 0.55;
-const REVEAL_SPAN = 1 - STAGGER_SPAN;
-
-function SkillCard({ skill, index, progress }: {
-  skill: typeof skills[0];
-  index: number;
-  progress: MotionValue<number>;
-}) {
-  const start = (index / skills.length) * STAGGER_SPAN;
-  const end = start + REVEAL_SPAN;
-
-  const opacity = useTransform(progress, [start, end], [0, 1]);
-  const y       = useTransform(progress, [start, end], [18, 0]);
-  const scale   = useTransform(progress, [start, end], [0.85, 1]);
-
-  return (
-    /* The cell itself never transforms — that keeps the 1px grid lines intact.
-       Only its contents animate. */
-    <motion.div
-      style={{ background:"var(--card)", padding:"1.75rem 1rem", textAlign:"center", cursor:"default", position:"relative" }}
-      whileHover={{ backgroundColor:"#EDEBD0", transition:{ duration:0.2 } }}
-    >
-      <motion.div style={{ opacity, y, scale }}>
-        <div style={{ display:"flex", justifyContent:"center", marginBottom:".6rem" }}>{skill.icon}</div>
-        <div style={{ fontSize:".78rem", fontWeight:700, color:"var(--ink2)", letterSpacing:".04em" }}>{skill.name}</div>
-      </motion.div>
-    </motion.div>
-  );
-}
+const EASE = [0.22, 1, 0.36, 1] as const;
 
 export default function Skills() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const gridRef    = useRef<HTMLDivElement>(null);
-
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start 80%", "start 20%"],
-  });
-  const headingY = useTransform(scrollYProgress, [0, 1], [40, 0]);
-  const headingOp = useTransform(scrollYProgress, [0, 0.5], [0, 1]);
-
-  /* One scroll subscription shared by every card, instead of one each. */
-  const { scrollYProgress: gridProgress } = useScroll({
-    target: gridRef,
-    offset: ["start 92%", "end 70%"],
-  });
-
   return (
-    <section
-      id="skills"
-      ref={sectionRef}
-      className="sec-pad"
-      style={{ maxWidth:1100, margin:"0 auto", padding:"4.5rem 3rem", position:"relative", zIndex:2 }}
-    >
-      <motion.div style={{ y: headingY, opacity: headingOp }}>
-        <p style={eyebrow}><span style={line} />Stack</p>
-        <h2 className="sec-title-size" style={secTitle}>
-          FLUTTER <span style={{ WebkitTextStroke:"2px var(--ink)", color:"transparent" }}>TOOLKIT</span>
-        </h2>
-      </motion.div>
+    <section id="stack" className="section">
+      <SectionHeading
+        index="02"
+        eyebrow="Stack"
+        title="What I build"
+        accentWord="with"
+        lead="Mobile, web, backend and cloud — the whole path from a Dart widget to a Lambda handler."
+      />
 
       <div
-        ref={gridRef}
-        className="sk-grid-cols"
+        className="skills-grid"
         style={{
-          display:"grid", gridTemplateColumns:"repeat(auto-fill, minmax(140px,1fr))",
-          gap:"1px", background:"var(--border)", border:"1px solid var(--border)",
-          borderRadius:"10px", overflow:"hidden",
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
+          gap: "1.1rem",
         }}
       >
-        {skills.map((s, i) => (
-          <SkillCard key={s.name} skill={s} index={i} progress={gridProgress} />
+        {skillGroups.map((g, i) => (
+          <motion.div
+            key={g.key}
+            initial={{ opacity: 0, y: 26 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.65, delay: (i % 3) * 0.08, ease: EASE }}
+            whileHover={{ y: -4 }}
+            className="glass glass-hover"
+            style={{ padding: "1.6rem 1.6rem 1.4rem", position: "relative", overflow: "hidden" }}
+          >
+            {/* top accent wash */}
+            <div
+              aria-hidden
+              style={{
+                position: "absolute", top: 0, left: 0, right: 0, height: 100,
+                background: `radial-gradient(ellipse at 20% 0%, ${g.accent}1f, transparent 70%)`,
+                pointerEvents: "none",
+              }}
+            />
+
+            <div style={{ position: "relative", display: "flex", alignItems: "center", gap: ".7rem", marginBottom: "1.25rem" }}>
+              <span
+                style={{
+                  width: 8, height: 8, borderRadius: 3, background: g.accent,
+                  boxShadow: `0 0 12px ${g.accent}aa`, flexShrink: 0,
+                }}
+              />
+              <h3 style={{ fontSize: ".95rem", fontWeight: 600, letterSpacing: "-.01em", color: "var(--text)" }}>
+                {g.title}
+              </h3>
+              <span
+                className="mono"
+                style={{ marginLeft: "auto", fontSize: ".65rem", color: "var(--text-faint)" }}
+              >
+                {String(g.items.length).padStart(2, "0")}
+              </span>
+            </div>
+
+            <div style={{ position: "relative", display: "flex", flexWrap: "wrap", gap: ".4rem" }}>
+              {g.items.map(item => (
+                <span
+                  key={item}
+                  className="mono"
+                  style={{
+                    fontSize: ".7rem",
+                    fontWeight: 500,
+                    letterSpacing: ".01em",
+                    padding: ".36rem .7rem",
+                    borderRadius: 8,
+                    border: "1px solid var(--stroke)",
+                    background: "rgba(255,255,255,.03)",
+                    color: "var(--text-dim)",
+                    whiteSpace: "nowrap",
+                    transition: "color .25s, border-color .25s, background .25s",
+                  }}
+                  onMouseEnter={e => {
+                    e.currentTarget.style.color = g.accent;
+                    e.currentTarget.style.borderColor = `${g.accent}55`;
+                    e.currentTarget.style.background = `${g.accent}12`;
+                  }}
+                  onMouseLeave={e => {
+                    e.currentTarget.style.color = "var(--text-dim)";
+                    e.currentTarget.style.borderColor = "var(--stroke)";
+                    e.currentTarget.style.background = "rgba(255,255,255,.03)";
+                  }}
+                >
+                  {item}
+                </span>
+              ))}
+            </div>
+          </motion.div>
         ))}
       </div>
     </section>
   );
 }
-
-const eyebrow: React.CSSProperties = { display:"inline-flex", alignItems:"center", gap:".6rem", fontSize:".7rem", fontWeight:700, letterSpacing:".18em", textTransform:"uppercase", color:"var(--red)", marginBottom:".6rem" };
-const line: React.CSSProperties = { width:20, height:2, background:"var(--red)", display:"inline-block" };
-const secTitle: React.CSSProperties = { fontFamily:"var(--font-barlow)", fontWeight:900, fontSize:"clamp(2.8rem,6vw,5rem)", letterSpacing:".02em", lineHeight:0.92, marginBottom:"3rem", color:"var(--ink)" };

@@ -1,112 +1,131 @@
 "use client";
-import { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
-import { HiOutlineMail, HiOutlinePhone } from "react-icons/hi";
-import { SiGithub } from "react-icons/si";
-import { FaLinkedinIn } from "react-icons/fa";
-import { TbWorld } from "react-icons/tb";
+import { motion } from "framer-motion";
+import { profile } from "@/lib/data";
+import { Reveal, PrimaryButton, GhostButton } from "./ui";
 
-const links = [
-  { icon: <TbWorld      size={16} />, label: "ujjvalgandhi.online",  href: "http://www.ujjvalgandhi.online/", primary: true  },
-  { icon: <HiOutlineMail size={16} />, label: "ujjval2804@gmail.com", href: "mailto:ujjval2804@gmail.com"                    },
-  { icon: <HiOutlinePhone size={16} />, label: "+91 99987 60436",     href: "tel:+919998760436"                              },
-  { icon: <FaLinkedinIn   size={16} />, label: "LinkedIn",              href: "https://linkedin.com/in/ujjvalgandhi"           },
-  { icon: <SiGithub     size={16} />, label: "GitHub",                href: "https://github.com/UjjvalGandhi"               },
+const EASE = [0.22, 1, 0.36, 1] as const;
+
+const channels = [
+  { label: "Email",    value: profile.email,     href: `mailto:${profile.email}`, accent: "#22D3EE" },
+  { label: "Phone",    value: profile.phone,     href: profile.phoneHref,          accent: "#A3E635" },
+  { label: "LinkedIn", value: "in/ujjvalgandhi", href: profile.linkedin,           accent: "#818CF8" },
+  { label: "GitHub",   value: "UjjvalGandhi",    href: profile.github,             accent: "#F472B6" },
 ];
 
-// Word-reveal component
-function WordReveal({ text, style }: { text: string; style?: React.CSSProperties }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start 85%", "start 30%"],
-  });
-
-  const words = text.split(" ");
-
-  return (
-    <div ref={ref} style={{ ...style, display:"flex", flexWrap:"wrap", gap:"0 0.3em" }}>
-      {words.map((word, i) => {
-        const wordStart = i / words.length;
-        const wordEnd   = (i + 1) / words.length;
-        return (
-          <WordSpan key={i} word={word} scrollYProgress={scrollYProgress} start={wordStart} end={wordEnd} />
-        );
-      })}
-    </div>
-  );
-}
-
-function WordSpan({ word, scrollYProgress, start, end }: { word: string; scrollYProgress: ReturnType<typeof useScroll>["scrollYProgress"]; start: number; end: number }) {
-  const opacity = useTransform(scrollYProgress, [start, Math.min(end + 0.08, 1)], [0.08, 1]);
-  const y       = useTransform(scrollYProgress, [start, Math.min(end + 0.08, 1)], [16, 0]);
-  return (
-    <motion.span style={{ opacity, y, display:"inline-block" }}>{word}</motion.span>
-  );
-}
-
 export default function Contact() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start 80%", "start 0%"],
-  });
-  // Background gradient shift
-  const bgGrad = useTransform(
-    scrollYProgress,
-    [0, 1],
-    ["linear-gradient(135deg, #1C0A04 0%, #1C0A04 100%)", "linear-gradient(135deg, #2a0e06 0%, #1C0A04 100%)"]
-  );
-
-  const linksY  = useTransform(scrollYProgress, [0.4, 1], [30, 0]);
-  const linksOp = useTransform(scrollYProgress, [0.4, 0.8], [0, 1]);
-
   return (
-    <motion.section
-      id="contact"
-      ref={sectionRef}
-      style={{ background: bgGrad as never, position:"relative", zIndex:2 }}
-    >
-      <div className="ct-pad" style={{ maxWidth:1100, margin:"0 auto", padding:"6rem 3rem" }}>
-
-        <p style={{ display:"inline-flex", alignItems:"center", gap:".6rem", fontSize:".7rem", fontWeight:700, letterSpacing:".18em", textTransform:"uppercase", color:"var(--sand)", marginBottom:".6rem" }}>
-          <span style={{ width:20, height:2, background:"var(--sand)", display:"inline-block" }} />Get in touch
-        </p>
-
-        {/* Word-by-word headline reveal */}
-        <WordReveal
-          text="LET'S BUILD SOMETHING GREAT"
-          style={{ fontFamily:"var(--font-barlow)", fontWeight:900, fontSize:"clamp(3rem,7vw,6.5rem)", lineHeight:1, letterSpacing:".02em", color:"var(--bg)", marginBottom:"1rem" }}
+    <section id="contact" className="section" style={{ paddingBottom: "5rem" }}>
+      <div
+        className="glass"
+        style={{
+          position: "relative",
+          overflow: "hidden",
+          borderRadius: "var(--r-lg)",
+          padding: "clamp(2.5rem, 6vw, 5rem)",
+        }}
+      >
+        {/* aurora wash inside the card */}
+        <div
+          aria-hidden
+          style={{
+            position: "absolute", inset: 0, pointerEvents: "none",
+            background:
+              "radial-gradient(ellipse 70% 100% at 10% 0%, rgba(34,211,238,.17), transparent 60%), radial-gradient(ellipse 70% 100% at 90% 100%, rgba(244,114,182,.14), transparent 60%)",
+          }}
         />
 
-        <motion.p
-          style={{ color:"var(--ink3)", fontSize:".95rem", maxWidth:400, lineHeight:1.7, marginBottom:"3rem" }}
-          initial={{ opacity:0, y:20 }}
-          whileInView={{ opacity:1, y:0 }}
-          viewport={{ once:true }}
-          transition={{ duration:0.6, delay:0.3 }}
-        >
-          Open to full-time Flutter roles &amp; freelance projects — Anand, Gujarat. Remote OK.
-        </motion.p>
-
-        <motion.div
-          className="ct-grid-cols"
-          style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(210px,1fr))", gap:".75rem", y: linksY, opacity: linksOp }}
-        >
-          {links.map(l => (
-            <motion.a
-              key={l.label}
-              href={l.href}
-              target={l.href.startsWith("http") ? "_blank" : undefined}
-              rel="noopener"
-              whileHover={{ y:-3, borderColor:"var(--red)", color:"var(--bg)", backgroundColor:"rgba(227,83,54,.18)" }}
-              style={{ display:"flex", alignItems:"center", gap:".6rem", padding:"1rem 1.4rem", border: l.primary ? "1px solid var(--red)" : "1px solid rgba(245,245,220,.1)", borderRadius:"6px", textDecoration:"none", color: l.primary ? "var(--bg)" : "var(--ink3)", fontSize:".82rem", fontWeight: l.primary ? 700 : 500, background: l.primary ? "var(--red)" : "rgba(255,255,255,.03)", cursor:"none" }}
+        <div style={{ position: "relative" }}>
+          <Reveal>
+            <div
+              className="mono"
+              style={{
+                display: "inline-flex", alignItems: "center", gap: ".6rem",
+                fontSize: ".68rem", letterSpacing: ".2em", textTransform: "uppercase",
+                color: "var(--text-faint)", marginBottom: "1.3rem",
+              }}
             >
-              {l.icon} {l.label}
-            </motion.a>
-          ))}
-        </motion.div>
+              <span style={{ color: "var(--cyan)" }}>06</span>
+              <span style={{ width: 26, height: 1, background: "linear-gradient(90deg, var(--cyan), transparent)" }} />
+              Contact
+            </div>
+          </Reveal>
+
+          <Reveal delay={1}>
+            <h2
+              style={{
+                fontFamily: "var(--font-display)", fontWeight: 700,
+                fontSize: "clamp(2.4rem, 6.5vw, 5rem)", lineHeight: 1,
+                letterSpacing: "-.045em", marginBottom: "1.4rem", maxWidth: 860,
+              }}
+            >
+              Let&apos;s build something{" "}
+              <span className="grad-text">worth shipping.</span>
+            </h2>
+          </Reveal>
+
+          <Reveal delay={2}>
+            <p style={{ fontSize: "1.02rem", lineHeight: 1.78, color: "var(--text-dim)", maxWidth: 520, marginBottom: "2.6rem" }}>
+              Open to full-time roles and freelance work — full stack, Flutter, or Next.js and Node.
+              Based in {profile.location}. Remote friendly.
+            </p>
+          </Reveal>
+
+          <Reveal delay={3}>
+            <div className="hero-cta" style={{ display: "flex", gap: ".75rem", flexWrap: "wrap", marginBottom: "3.2rem" }}>
+              <PrimaryButton href={`mailto:${profile.email}`}>Start a conversation →</PrimaryButton>
+              <GhostButton href="/resume.pdf" target="_blank">Download résumé ↓</GhostButton>
+            </div>
+          </Reveal>
+
+          <div
+            className="contact-grid"
+            style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(210px, 1fr))", gap: ".7rem" }}
+          >
+            {channels.map((c, i) => (
+              <motion.a
+                key={c.label}
+                href={c.href}
+                target={c.href.startsWith("http") ? "_blank" : undefined}
+                rel={c.href.startsWith("http") ? "noopener" : undefined}
+                initial={{ opacity: 0, y: 18 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-40px" }}
+                transition={{ duration: 0.55, delay: i * 0.07, ease: EASE }}
+                whileHover={{ y: -3 }}
+                style={{
+                  display: "grid", gap: ".35rem",
+                  padding: "1.1rem 1.25rem", borderRadius: 13,
+                  border: "1px solid var(--stroke)", background: "rgba(255,255,255,.028)",
+                  textDecoration: "none", transition: "border-color .3s, background .3s",
+                }}
+                onMouseEnter={e => {
+                  e.currentTarget.style.borderColor = `${c.accent}66`;
+                  e.currentTarget.style.background = `${c.accent}0f`;
+                }}
+                onMouseLeave={e => {
+                  e.currentTarget.style.borderColor = "var(--stroke)";
+                  e.currentTarget.style.background = "rgba(255,255,255,.028)";
+                }}
+              >
+                <span
+                  className="mono"
+                  style={{ fontSize: ".6rem", letterSpacing: ".16em", textTransform: "uppercase", color: c.accent }}
+                >
+                  {c.label}
+                </span>
+                <span
+                  style={{
+                    fontSize: ".86rem", fontWeight: 500, color: "var(--text)",
+                    overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap",
+                  }}
+                >
+                  {c.value}
+                </span>
+              </motion.a>
+            ))}
+          </div>
+        </div>
       </div>
-    </motion.section>
+    </section>
   );
 }

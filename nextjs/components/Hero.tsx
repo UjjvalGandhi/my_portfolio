@@ -1,171 +1,442 @@
 "use client";
-import { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
-import { SiAndroid } from "react-icons/si";
-import { FaApple, FaDesktop, FaGlobe, FaFilePdf } from "react-icons/fa";
+import { useEffect, useRef, useState } from "react";
+import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
+import { profile } from "@/lib/data";
+import { PrimaryButton, GhostButton } from "./ui";
 
-const phones = [
-  { src: "/screens/app2.png", alt: "App screen 1", x: -132, rot: -10, ry: -14, scale: 0.84, z: 1 },
-  { src: "/screens/app1.png", alt: "App screen 2", x: 0, rot: 0, ry: 0, scale: 1, z: 3 },
-  { src: "/screens/app3.png", alt: "App screen 3", x: 132, rot: 10, ry: 14, scale: 0.84, z: 1 },
+const EASE = [0.22, 1, 0.36, 1] as const;
+
+const COMMANDS = [
+  { cmd: "flutter build ipa --release", out: "✓ iOS · Android · Web · Desktop" },
+  { cmd: "next build && vercel deploy", out: "✓ Next.js app live on the edge" },
+  { cmd: "sam deploy --stack prasadam-api", out: "✓ Node + Express on AWS Lambda" },
 ];
 
-const platforms = [
-  { icon: <SiAndroid size={14} color="#3DDC84" />, label: "Android" },
-  { icon: <FaApple size={14} color="#555" />, label: "iOS" },
-  { icon: <FaGlobe size={14} color="#4A90D9" />, label: "Web" },
-  { icon: <FaDesktop size={14} color="#7b6b5a" />, label: "Desktop" },
+const TARGETS = [
+  { label: "iOS",     sub: ".ipa",  color: "#22D3EE" },
+  { label: "Android", sub: ".aab",  color: "#A3E635" },
+  { label: "Web",     sub: "SPA",   color: "#818CF8" },
+  { label: "Desktop", sub: ".app",  color: "#F472B6" },
 ];
 
-const fadeUp = (delay = 0) => ({
-  initial: { opacity: 0, y: 28 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.7, delay, ease: "easeOut" as const },
-});
+/* ── typewriter that cycles through the commands ─────────────────
+   State advances only from timer callbacks, never synchronously in the
+   effect body, so there are no cascading renders and StrictMode's double
+   mount just re-arms the same timeout. */
+function useTypewriter(enabled: boolean) {
+  const [i, setI] = useState(0);
+  const [n, setN] = useState(0);
 
-export default function Hero() {
-  const containerRef = useRef<HTMLDivElement>(null);
+  const full = COMMANDS[i].cmd;
+  const complete = n >= full.length;
 
-  // Scroll progress over the full 200vh container
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end start"],
-  });
+  useEffect(() => {
+    if (!enabled) return;
 
-  // Parallax transforms driven by scroll
-  const textY = useTransform(scrollYProgress, [0, 1], ["0%", "-35%"]);
-  const textOpacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
-  const textScale = useTransform(scrollYProgress, [0, 0.7], [1, 0.88]);
-  const phonesY = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
-  const phonesScale = useTransform(scrollYProgress, [0, 0.8], [1, 0.7]);
-  const phonesOpacity = useTransform(scrollYProgress, [0, 0.75], [1, 0]);
-  const chevronOp = useTransform(scrollYProgress, [0, 0.12], [1, 0]);
+    if (complete) {
+      const hold = setTimeout(() => {
+        setI(v => (v + 1) % COMMANDS.length);
+        setN(0);
+      }, 2600);
+      return () => clearTimeout(hold);
+    }
 
-  const scrollTo = (id: string) =>
-    document.querySelector(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    const tick = setTimeout(() => setN(v => v + 1), 42);
+    return () => clearTimeout(tick);
+  }, [enabled, complete, full]);
 
-  return (
-    /* 200vh scroll container — the sticky child stays pinned */
-    <div ref={containerRef} style={{ height: "200vh", position: "relative" }}>
-      {/* Sticky wrapper — stays in view for the full 200vh */}
-      <div id="hero-sticky" style={{
-        position: "sticky", top: 0,
-        height: "100vh", overflow: "hidden",
-        display: "grid",
-        gridTemplateColumns: "1fr auto",
-        gridTemplateRows: "1fr auto",
-      }}>
-
-        {/* ── LEFT ── */}
-        <motion.div
-          className="hero-left-pad"
-          style={{
-            background: "var(--bg)",
-            padding: "6.5rem 3rem 2.5rem",
-            display: "flex", flexDirection: "column", justifyContent: "flex-start",
-            position: "relative", overflow: "hidden",
-            y: textY, opacity: textOpacity, scale: textScale,
-          }}
-        >
-          <motion.p {...fadeUp(0.1)} style={{ display: "inline-flex", alignItems: "center", gap: ".6rem", fontSize: ".72rem", fontWeight: 700, letterSpacing: ".18em", textTransform: "uppercase", color: "var(--red)", marginBottom: "1.5rem" }}>
-            <span style={{ width: 24, height: 2, background: "var(--red)", display: "inline-block" }} />
-            Flutter Developer · Available for hire
-          </motion.p>
-
-          <motion.h1 {...fadeUp(0.2)} className="hero-name-size" style={{ fontFamily: "var(--font-barlow)", fontWeight: 900, fontSize: "clamp(5rem,12vw,11rem)", lineHeight: 0.88, letterSpacing: "-.01em", color: "var(--ink)" }}>
-            UJJAWAL<br />
-            <span style={{ WebkitTextStroke: "2px var(--ink)", color: "transparent" }}>GANDHI</span>
-          </motion.h1>
-
-          <motion.div {...fadeUp(0.35)} style={{ marginTop: "2rem", display: "flex", flexDirection: "column", gap: "1.2rem" }}>
-            <p style={{ maxWidth: 340, fontSize: ".92rem", lineHeight: 1.7, color: "var(--ink2)" }}>
-              Building beautiful cross-platform apps for{" "}
-              <strong style={{ color: "var(--ink)", fontWeight: 700 }}>Android, iOS, Web &amp; Desktop</strong>{" "}
-              — using Flutter &amp; Dart.
-            </p>
-            <div className="plat-wrap" style={{ display: "flex", gap: ".5rem", flexWrap: "wrap" }}>
-              {platforms.map(p => (
-                <div key={p.label} style={{ display: "flex", alignItems: "center", gap: ".4rem", padding: ".35rem .9rem", border: "1.5px solid var(--border)", borderRadius: "3px", fontSize: ".72rem", fontWeight: 600, letterSpacing: ".05em", color: "var(--ink2)", background: "var(--card)" }}>
-                  {p.icon} {p.label}
-                </div>
-              ))}
-            </div>
-          </motion.div>
-
-          <motion.div {...fadeUp(0.5)} className="cta-stack" style={{ display: "flex", gap: ".75rem", flexWrap: "wrap", marginTop: "2.5rem" }}>
-            <button onClick={() => scrollTo("#projects")} style={btnP}>View Projects</button>
-            <a href="/resume.pdf" target="_blank" rel="noopener" style={{ ...btnS, display: "inline-flex", alignItems: "center", gap: ".5rem" }}><FaFilePdf size={14} color="var(--red)" /> Resume</a>
-            <button onClick={() => scrollTo("#contact")} style={btnS}>Let&apos;s Talk</button>
-            <a href="http://www.ujjvalgandhi.online/" target="_blank" rel="noopener" style={{ ...btnS, display: "inline-block" }}>Live Site ↗</a>
-          </motion.div>
-        </motion.div>
-
-        {/* ── RIGHT PANEL ── */}
-        <motion.div
-          className="hero-right-panel"
-          initial={{ opacity: 0, x: 60 }} animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-          style={{
-            width: "34vw", background: "transparent", position: "relative",
-            display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "2rem",
-            y: phonesY, scale: phonesScale, opacity: phonesOpacity,
-          }}
-        >
-          <div className="phone-fan" style={{ position: "relative", zIndex: 1, width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", perspective: "1400px" }}>
-            {phones.map((p, i) => (
-              <motion.div
-                key={p.src}
-                initial={{ opacity: 0, y: 40, x: p.x, rotate: p.rot, rotateY: p.ry, scale: p.scale }}
-                animate={{ opacity: 1, y: 0, x: p.x, rotate: p.rot, rotateY: p.ry, scale: p.scale }}
-                transition={{ duration: 0.8, delay: 0.4 + i * 0.12, ease: "easeOut" }}
-                whileHover={{ y: -14, scale: p.scale * 1.05, zIndex: 5, transition: { duration: 0.3 } }}
-                style={{ position: "absolute", zIndex: p.z }}
-              >
-                <div style={{
-                  width: 210, height: 438, borderRadius: 34, background: "#0e0b09",
-                  padding: 7, boxShadow: `0 ${18 + p.z * 6}px ${40 + p.z * 10}px rgba(20,8,3,${0.28 + p.z * 0.06})`,
-                  border: "1px solid rgba(255,255,255,.08)",
-                }}>
-                  <div style={{ position: "absolute", top: 14, left: "50%", transform: "translateX(-50%)", width: 48, height: 13, borderRadius: 8, background: "#0e0b09", zIndex: 2 }} />
-                  <div style={{ width: "100%", height: "100%", borderRadius: 24, overflow: "hidden", position: "relative", background: "#1c1c1c" }}>
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={p.src} alt={p.alt} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
-
-        {/* ── BOTTOM BAR ── */}
-        <motion.div {...fadeUp(0.65)} className="hero-bottom-bar" style={{ gridColumn: "1/-1", borderTop: "1px solid var(--border)", display: "flex", justifyContent: "space-between", alignItems: "center", padding: "1.2rem 3rem", fontSize: ".7rem", fontWeight: 700, letterSpacing: ".14em", textTransform: "uppercase", color: "var(--ink2)" }}>
-          <span style={{ display: "flex", alignItems: "center", gap: ".5rem" }}>
-            <span style={{ width: 6, height: 6, borderRadius: "50%", background: "var(--red)", boxShadow: "0 0 8px var(--red)", display: "inline-block", animation: "blink 2s infinite" }} />
-            Open to opportunities
-          </span>
-          <span>Anand, Gujarat, India</span>
-          <span>ujjval2804@gmail.com</span>
-        </motion.div>
-
-        {/* ── SCROLL INDICATOR ── */}
-        <motion.div
-          style={{
-            position: "absolute", bottom: "5.5rem", left: "50%", transform: "translateX(-50%)",
-            display: "flex", flexDirection: "column", alignItems: "center", gap: ".35rem",
-            opacity: chevronOp, pointerEvents: "none",
-          }}
-        >
-          <span style={{ fontSize: ".6rem", fontWeight: 700, letterSpacing: ".18em", textTransform: "uppercase", color: "var(--ink2)" }}>Scroll</span>
-          <motion.div
-            animate={{ y: [0, 6, 0] }}
-            transition={{ duration: 1.4, repeat: Infinity, ease: "easeInOut" }}
-            style={{ width: 1, height: 24, background: "linear-gradient(180deg, var(--red), transparent)", borderRadius: 2 }}
-          />
-        </motion.div>
-      </div>
-    </div>
-  );
+  if (!enabled) return { text: full, done: true, index: i };
+  return { text: full.slice(0, n), done: complete, index: i };
 }
 
-const btnP: React.CSSProperties = { padding: ".85rem 2.2rem", background: "var(--ink)", color: "var(--bg)", fontFamily: "var(--font-dm-sans)", fontSize: ".82rem", fontWeight: 700, letterSpacing: ".07em", textTransform: "uppercase", border: "none", borderRadius: "3px", cursor: "none" };
-const btnS: React.CSSProperties = { padding: ".85rem 2.2rem", background: "transparent", color: "var(--ink)", fontFamily: "var(--font-dm-sans)", fontSize: ".82rem", fontWeight: 600, letterSpacing: ".07em", textTransform: "uppercase", border: "1.5px solid var(--ink)", borderRadius: "3px", textDecoration: "none", cursor: "none" };
+export default function Hero() {
+  const ref = useRef<HTMLElement>(null);
+  const reduce = useReducedMotion();
+  const { text, done, index } = useTypewriter(!reduce);
+
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start start", "end start"],
+  });
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", "16%"]);
+  const opacity = useTransform(scrollYProgress, [0, 0.85], [1, 0]);
+
+  return (
+    <section
+      ref={ref}
+      id="top"
+      style={{
+        position: "relative",
+        zIndex: 2,
+        minHeight: "100svh",
+        display: "flex",
+        alignItems: "center",
+        padding: "8.5rem 2.5rem 5rem",
+        maxWidth: 1320,
+        margin: "0 auto",
+      }}
+    >
+      <motion.div
+        style={{ y, opacity, width: "100%" }}
+        className="hero-grid-wrap"
+      >
+        <div
+          className="hero-grid"
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1.05fr 1fr",
+            gap: "4.5rem",
+            alignItems: "center",
+            width: "100%",
+          }}
+        >
+          {/* ─────────────────── LEFT ─────────────────── */}
+          <div>
+            <motion.div
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, ease: EASE }}
+              className="mono glass"
+              style={{
+                display: "inline-flex", alignItems: "center", gap: ".6rem",
+                padding: ".42rem .9rem .42rem .7rem", borderRadius: 999,
+                fontSize: ".7rem", letterSpacing: ".1em", textTransform: "uppercase",
+                color: "var(--text-dim)", marginBottom: "1.8rem",
+              }}
+            >
+              <span
+                style={{
+                  width: 7, height: 7, borderRadius: "50%", background: "var(--lime)",
+                  boxShadow: "0 0 10px var(--lime)", animation: "pulse-dot 2.2s infinite",
+                }}
+              />
+              Open to opportunities
+            </motion.div>
+
+            <motion.h1
+              initial={{ opacity: 0, y: 26 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.08, ease: EASE }}
+              style={{
+                fontFamily: "var(--font-display)",
+                fontWeight: 700,
+                fontSize: "clamp(3.1rem, 7.4vw, 6.4rem)",
+                lineHeight: 0.92,
+                letterSpacing: "-0.045em",
+                marginBottom: "1.5rem",
+              }}
+            >
+              <span style={{ display: "block", color: "var(--text)" }}>{profile.first}</span>
+              <span className="grad-text" style={{ display: "block" }}>{profile.last}</span>
+            </motion.h1>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.2, ease: EASE }}
+              style={{
+                display: "flex", alignItems: "center", flexWrap: "wrap",
+                gap: ".55rem", marginBottom: "1.6rem",
+              }}
+            >
+              <span
+                style={{
+                  fontSize: "clamp(1rem, 2vw, 1.22rem)", fontWeight: 600,
+                  letterSpacing: "-.015em", color: "var(--text)",
+                }}
+              >
+                {profile.role}
+              </span>
+              <span style={{ color: "var(--text-faint)" }}>·</span>
+              {profile.roles.map((r, i) => (
+                <span key={r} style={{ display: "inline-flex", alignItems: "center", gap: ".55rem" }}>
+                  <span className="mono" style={{ fontSize: ".84rem", color: "var(--cyan)" }}>{r}</span>
+                  {i < profile.roles.length - 1 && (
+                    <span style={{ color: "var(--text-faint)", fontSize: ".7rem" }}>/</span>
+                  )}
+                </span>
+              ))}
+            </motion.div>
+
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.3, ease: EASE }}
+              style={{
+                maxWidth: 480, fontSize: "1rem", lineHeight: 1.78,
+                color: "var(--text-dim)", marginBottom: "2.4rem",
+              }}
+            >
+              {profile.summary}
+            </motion.p>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.4, ease: EASE }}
+              className="hero-cta"
+              style={{ display: "flex", gap: ".75rem", flexWrap: "wrap", marginBottom: "2.8rem" }}
+            >
+              <PrimaryButton onClick={() => document.getElementById("work")?.scrollIntoView({ behavior: "smooth" })}>
+                View work →
+              </PrimaryButton>
+              <GhostButton href="/resume.pdf" target="_blank">
+                Résumé ↓
+              </GhostButton>
+              <GhostButton href={profile.github} target="_blank">
+                GitHub ↗
+              </GhostButton>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.8, delay: 0.55 }}
+              className="mono hero-meta"
+              style={{
+                display: "flex", gap: "2rem", flexWrap: "wrap",
+                paddingTop: "1.6rem", borderTop: "1px solid var(--stroke)",
+                fontSize: ".72rem", letterSpacing: ".06em", color: "var(--text-faint)",
+              }}
+            >
+              <span>{profile.location}</span>
+              <a href={`mailto:${profile.email}`} style={{ color: "var(--text-dim)", textDecoration: "none" }}>
+                {profile.email}
+              </a>
+              <a href={profile.linkedin} target="_blank" rel="noopener" style={{ color: "var(--text-dim)", textDecoration: "none" }}>
+                LinkedIn ↗
+              </a>
+            </motion.div>
+          </div>
+
+          {/* ─────────────────── RIGHT: build pipeline ─────────────────── */}
+          <motion.div
+            className="hero-visual"
+            initial={{ opacity: 0, x: 34, scale: 0.97 }}
+            animate={{ opacity: 1, x: 0, scale: 1 }}
+            transition={{ duration: 0.9, delay: 0.25, ease: EASE }}
+            style={{ position: "relative" }}
+          >
+            {/* glow behind the panel */}
+            <div
+              aria-hidden
+              style={{
+                position: "absolute", inset: "-14%",
+                background: "radial-gradient(ellipse at 60% 40%, rgba(129,140,248,.26), transparent 65%)",
+                filter: "blur(44px)", pointerEvents: "none",
+              }}
+            />
+
+            <div
+              className="glass"
+              style={{
+                position: "relative",
+                borderRadius: "var(--r-lg)",
+                overflow: "hidden",
+                boxShadow: "0 40px 90px -30px rgba(0,0,0,.85), 0 0 0 1px rgba(255,255,255,.04) inset",
+              }}
+            >
+              {/* terminal chrome */}
+              <div
+                style={{
+                  display: "flex", alignItems: "center", gap: ".6rem",
+                  padding: ".8rem 1.1rem",
+                  borderBottom: "1px solid var(--stroke)",
+                  background: "rgba(255,255,255,.025)",
+                }}
+              >
+                <span style={{ display: "flex", gap: ".4rem" }}>
+                  {["#FF5F57", "#FEBC2E", "#28C840"].map(c => (
+                    <span key={c} style={{ width: 10, height: 10, borderRadius: "50%", background: c, opacity: .9 }} />
+                  ))}
+                </span>
+                <span
+                  className="mono"
+                  style={{ fontSize: ".68rem", color: "var(--text-faint)", marginLeft: ".4rem", letterSpacing: ".04em" }}
+                >
+                  ujjawal@build — one codebase
+                </span>
+                <span
+                  className="mono"
+                  style={{
+                    marginLeft: "auto", fontSize: ".6rem", letterSpacing: ".14em",
+                    textTransform: "uppercase", color: "var(--lime)",
+                    display: "inline-flex", alignItems: "center", gap: ".35rem",
+                  }}
+                >
+                  <span style={{ width: 5, height: 5, borderRadius: "50%", background: "var(--lime)", boxShadow: "0 0 8px var(--lime)" }} />
+                  CI passing
+                </span>
+              </div>
+
+              {/* command line */}
+              <div
+                className="mono"
+                style={{
+                  padding: "1rem 1.2rem .35rem",
+                  fontSize: ".78rem",
+                  color: "var(--text)",
+                  minHeight: "2.1rem",
+                  whiteSpace: "nowrap",
+                  overflow: "hidden",
+                }}
+              >
+                <span style={{ color: "var(--cyan)" }}>❯</span>{" "}
+                <span>{text}</span>
+                {!reduce && <span className="caret" style={{ marginLeft: 2 }} />}
+              </div>
+
+              {/* pipeline diagram */}
+              <div style={{ padding: ".4rem .5rem 0" }}>
+                <svg viewBox="0 0 460 236" style={{ width: "100%", height: "auto", display: "block" }} role="img" aria-label="One Dart codebase building to iOS, Android, Web and Desktop">
+                  <defs>
+                    <linearGradient id="gw" x1="0" y1="0" x2="1" y2="0">
+                      <stop offset="0%" stopColor="#22D3EE" />
+                      <stop offset="100%" stopColor="#818CF8" />
+                    </linearGradient>
+                    <linearGradient id="src" x1="0" y1="0" x2="1" y2="1">
+                      <stop offset="0%" stopColor="rgba(34,211,238,.18)" />
+                      <stop offset="100%" stopColor="rgba(129,140,248,.1)" />
+                    </linearGradient>
+                  </defs>
+
+                  {/* connectors */}
+                  {TARGETS.map((t, i) => {
+                    const yc = 30 + i * 54;
+                    const d = `M150 111 C206 111, 228 ${yc}, 286 ${yc}`;
+                    return (
+                      <g key={t.label}>
+                        <path d={d} fill="none" stroke="rgba(255,255,255,.09)" strokeWidth="1.4" />
+                        <path
+                          id={`p${i}`}
+                          className={reduce ? undefined : "flow-line"}
+                          d={d}
+                          fill="none"
+                          stroke={t.color}
+                          strokeWidth="1.6"
+                          strokeLinecap="round"
+                          opacity=".85"
+                          style={{ animationDelay: `${i * 0.18}s` }}
+                        />
+                      </g>
+                    );
+                  })}
+
+                  {/* source node */}
+                  <g>
+                    <rect x="14" y="78" width="136" height="66" rx="15" fill="url(#src)" stroke="url(#gw)" strokeWidth="1.2" />
+                    <text x="82" y="105" textAnchor="middle" fill="#ECECF4" style={{ font: "600 15px var(--font-display), sans-serif", letterSpacing: "-.02em" }}>
+                      1 codebase
+                    </text>
+                    <text x="82" y="124" textAnchor="middle" fill="#9797A8" style={{ font: "400 10.5px var(--font-mono), monospace", letterSpacing: ".04em" }}>
+                      lib/main.dart
+                    </text>
+                  </g>
+
+                  {/* targets */}
+                  {TARGETS.map((t, i) => {
+                    const yc = 30 + i * 54;
+                    return (
+                      <g key={t.label} className={reduce ? undefined : "tgt"} style={{ animationDelay: `${i * 0.35}s` }}>
+                        <rect
+                          x="286" y={yc - 20} width="160" height="40" rx="11"
+                          fill="rgba(255,255,255,.035)" stroke={`${t.color}44`} strokeWidth="1"
+                        />
+                        <circle cx="306" cy={yc} r="3.5" fill={t.color} />
+                        <text x="320" y={yc + 4.5} fill="#ECECF4" style={{ font: "500 12.5px var(--font-inter), sans-serif" }}>
+                          {t.label}
+                        </text>
+                        <text x="432" y={yc + 4} textAnchor="end" fill="#5E5E6E" style={{ font: "400 10px var(--font-mono), monospace" }}>
+                          {t.sub}
+                        </text>
+                      </g>
+                    );
+                  })}
+                </svg>
+              </div>
+
+              {/* output line */}
+              <div
+                className="mono"
+                style={{
+                  display: "flex", alignItems: "center", justifyContent: "space-between",
+                  gap: "1rem", padding: ".85rem 1.2rem",
+                  borderTop: "1px solid var(--stroke)",
+                  background: "rgba(255,255,255,.02)",
+                  fontSize: ".7rem", letterSpacing: ".03em",
+                }}
+              >
+                <motion.span
+                  key={index}
+                  initial={{ opacity: 0, y: 6 }}
+                  animate={{ opacity: done ? 1 : 0.25, y: 0 }}
+                  transition={{ duration: 0.4 }}
+                  style={{ color: "var(--lime)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}
+                >
+                  {COMMANDS[index].out}
+                </motion.span>
+                <span style={{ color: "var(--text-faint)", whiteSpace: "nowrap" }}>42.6s</span>
+              </div>
+            </div>
+
+            {/* floating pub.dev badge */}
+            <motion.a
+              href="https://pub.dev/packages/liquid_glass_bottom_nav_native"
+              target="_blank"
+              rel="noopener"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.85, ease: EASE }}
+              whileHover={{ y: -4 }}
+              className="glass pkg-float"
+              style={{
+                position: "absolute", right: "-1.2rem", bottom: "-1.9rem",
+                display: "flex", alignItems: "center", gap: ".75rem",
+                padding: ".7rem .95rem", borderRadius: 14,
+                textDecoration: "none",
+                background: "rgba(11,11,18,.9)",
+                boxShadow: "0 18px 46px -16px rgba(0,0,0,.9)",
+              }}
+            >
+              <span
+                style={{
+                  display: "grid", placeItems: "center", width: 34, height: 34,
+                  borderRadius: 10, background: "rgba(34,211,238,.12)",
+                  border: "1px solid rgba(34,211,238,.3)", color: "var(--cyan)",
+                  fontSize: ".95rem",
+                }}
+              >
+                ◆
+              </span>
+              <span style={{ display: "grid", gap: ".15rem" }}>
+                <span className="mono" style={{ fontSize: ".66rem", color: "var(--text)", letterSpacing: ".01em" }}>
+                  liquid_glass_bottom_nav
+                </span>
+                <span className="mono" style={{ fontSize: ".6rem", color: "var(--text-faint)", letterSpacing: ".06em" }}>
+                  <span style={{ color: "var(--lime)" }}>160/160</span> pub points · pub.dev
+                </span>
+              </span>
+            </motion.a>
+          </motion.div>
+        </div>
+      </motion.div>
+
+      <style>{`
+        @keyframes tgt-pulse {
+          0%, 72%, 100% { opacity: .55; }
+          80%           { opacity: 1; }
+        }
+        .tgt { animation: tgt-pulse 3.4s ease-in-out infinite; }
+        @media (max-width: 1024px) {
+          .pkg-float { right: 0 !important; }
+        }
+        @media (max-width: 640px) {
+          .pkg-float { position: static !important; margin-top: 1.1rem; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .tgt { animation: none; opacity: 1; }
+        }
+      `}</style>
+    </section>
+  );
+}
