@@ -12,7 +12,7 @@ const links = [
 
 export default function Footer() {
   return (
-    <footer style={{ background: "var(--bg)", borderTop: "1px solid var(--line)", position: "relative", zIndex: 1 }}>
+    <footer style={{ background: "transparent", borderTop: "1px solid var(--line)", position: "relative", zIndex: 1 }}>
       <div
         className="foot-row"
         style={{

@@ -49,7 +49,7 @@ export default function Marquee() {
         padding: ".95rem 0",
         borderTop: "1px solid var(--line)",
         borderBottom: "1px solid var(--line)",
-        background: "var(--bg-alt)",
+        background: "var(--bg-field)",
       }}
     >
       <motion.div style={{ display: "flex", width: "max-content", x, willChange: "transform" }}>

@@ -9,6 +9,7 @@
   /* canvas */
   --bg:        #FFFFFF;
   --bg-alt:    #FAFAFA;
+  --bg-field:  #F2F2F4;   /* the ground the content sheet sits on */
   --bg-ink:    #0A0A0A;   /* inverted blocks */
 
   /* type */
@@ -43,7 +44,7 @@ html {
 }
 
 body {
-  background: var(--bg);
+  background: var(--bg-field);
   color: var(--ink);
   font-family: var(--font-inter), system-ui, -apple-system, sans-serif;
   font-feature-settings: "cv02", "cv03", "cv04", "cv11", "ss01";
@@ -87,6 +88,9 @@ body {
   padding: 0 var(--gut);
   display: grid;
   grid-template-columns: repeat(12, 1fr);
+  /* The white sheet. Everything in .shell sits on this; the column
+     rails are drawn straight onto it. */
+  background: var(--bg);
 }
 
 .grid-rails__col {
@@ -284,4 +288,57 @@ body {
   .hero-cta > * { justify-content: center !important; }
   .hero-meta { flex-direction: column !important; gap: .6rem !important; align-items: flex-start !important; }
   .foot-row { flex-direction: column !important; gap: 1rem !important; align-items: flex-start !important; }
+}
+
+/* ──────────────────────────────────────────────────────────────
+   SIDE RAILS
+   On wide displays the content sheet leaves large margins. Rather
+   than leave them blank, they carry vertical type and a scroll
+   readout, so the page reads as a sheet on a measured ground.
+   ────────────────────────────────────────────────────────────── */
+.side-rails {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  display: none;
+}
+
+.side-rail {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: calc((100% - var(--maxw)) / 2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+}
+.side-rail--left  { left: 0; }
+.side-rail--right { right: 0; flex-direction: column; }
+
+.side-rail__text {
+  writing-mode: vertical-rl;
+  font-size: 0.62rem;
+  letter-spacing: 0.24em;
+  color: var(--ink-3);
+  white-space: nowrap;
+}
+.side-rail--left .side-rail__text { transform: rotate(180deg); }
+
+.side-rail__pct {
+  position: absolute;
+  bottom: 2.5rem;
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  color: var(--ink-3);
+}
+.side-rail__pct::after {
+  content: "%";
+  opacity: 0.5;
+}
+
+/* Only once each margin can hold the type without crowding the sheet. */
+@media (min-width: 1480px) {
+  .side-rails { display: block; }
 }

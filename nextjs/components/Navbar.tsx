@@ -54,7 +54,7 @@ export default function Navbar() {
         position: "fixed",
         top: 0, left: 0, right: 0,
         zIndex: 200,
-        background: "var(--bg)",
+        background: "transparent",
         borderBottom: "1px solid var(--line)",
       }}
     >
@@ -70,6 +70,7 @@ export default function Navbar() {
           gap: "1.5rem",
           borderLeft: "1px solid var(--line)",
           borderRight: "1px solid var(--line)",
+          background: "var(--bg)",
         }}
       >
         {/* wordmark */}

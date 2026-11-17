@@ -1,4 +1,5 @@
 import GridRails   from "@/components/GridRails";
+import SideRails   from "@/components/SideRails";
 import ProgressBar from "@/components/ProgressBar";
 import Navbar      from "@/components/Navbar";
 import Hero        from "@/components/Hero";
@@ -17,6 +18,7 @@ export default function Home() {
     <>
       <JsonLd />
       <GridRails />
+      <SideRails />
       <ProgressBar />
       <Navbar />
 
