@@ -37,7 +37,9 @@
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
 html {
-  scroll-behavior: smooth;
+  /* No scroll-behavior here: Lenis animates scrolling itself and native
+     smooth scrolling fights it. The reduced-motion and no-JS paths get
+     smooth scrolling back in the media query at the foot of this file. */
   scroll-padding-top: 76px;
   -webkit-text-size-adjust: 100%;
 }
@@ -49,8 +51,15 @@ body {
   font-feature-settings: "cv02", "cv03", "cv04", "cv11", "ss01";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
+  /* `clip`, not `hidden`: overflow-x: hidden makes body a scroll container
+     (overflow-y computes to auto), which breaks Lenis measurement and any
+     position: sticky inside. `clip` suppresses overflow without that. */
+  overflow-x: clip;
   line-height: 1.5;
+}
+
+@supports not (overflow: clip) {
+  body { overflow-x: hidden; }
 }
 
 ::selection { background: var(--accent); color: #fff; }
@@ -251,7 +260,7 @@ body {
     animation-iteration-count: 1 !important;
     transition-duration: .01ms !important;
   }
-  html { scroll-behavior: auto; }
+  html { scroll-behavior: smooth; }   /* Lenis is not initialised here */
 }
 
 /* ──────────────────────────────────────────────────────────────
@@ -358,4 +367,24 @@ body {
     align-items: start;
     gap: clamp(2rem, 6vw, 6rem);
   }
+}
+
+/* ──────────────────────────────────────────────────────────────
+   SCROLL ANIMATION
+   Split words are pre-hidden only when the inline script in layout.tsx
+   has confirmed JS is live and motion is allowed. Without that flag the
+   text renders normally, so it is never hidden from a reader or crawler.
+   Only opacity/transform are touched, so nothing reflows.
+   ────────────────────────────────────────────────────────────── */
+html[data-anim="on"] [data-word] { opacity: 0; }
+
+/* Lenis's own stylesheet is imported in SmoothScroll.tsx — do not restate
+   its rules here. A hand-written `.lenis-stopped { overflow: hidden }`
+   collapsed the document's scroll range while the mobile menu was open and
+   left scrollTo clamped at 0 afterwards; the real rule uses `overflow: clip`,
+   which suppresses scrolling without creating a scroll container. That file
+   also carries the `[data-lenis-prevent]` overscroll rules. */
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-anim="on"] [data-word] { opacity: 1; }
 }

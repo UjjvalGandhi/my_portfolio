@@ -1,3 +1,4 @@
+import SmoothScroll from "@/components/SmoothScroll";
 import GridRails   from "@/components/GridRails";
 import ProgressBar from "@/components/ProgressBar";
 import Navbar      from "@/components/Navbar";
@@ -16,6 +17,7 @@ export default function Home() {
   return (
     <>
       <JsonLd />
+      <SmoothScroll />
       <GridRails />
       <ProgressBar />
       <Navbar />

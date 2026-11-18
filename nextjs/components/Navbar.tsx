@@ -2,6 +2,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import { profile } from "@/lib/data";
+import { scrollToSection, scrollToTop, lockScroll } from "@/lib/scroll";
 
 const links = [
   { label: "About",      id: "about",      num: "01" },
@@ -35,18 +36,23 @@ export default function Navbar() {
 
   const go = useCallback(
     (id: string) => {
-      const scroll = () =>
-        document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
       if (open) {
         /* Let the sheet finish collapsing, or the re-flow strands the scroll. */
         setOpen(false);
-        setTimeout(scroll, 360);
+        setTimeout(() => scrollToSection(id), 360);
       } else {
-        scroll();
+        scrollToSection(id);
       }
     },
     [open]
   );
+
+  /* The page used to scroll behind the open sheet. Lenis can actually stop
+     it, so it now does. */
+  useEffect(() => {
+    lockScroll(open);
+    return () => lockScroll(false);
+  }, [open]);
 
   return (
     <header
@@ -75,7 +81,7 @@ export default function Navbar() {
       >
         {/* wordmark */}
         <button
-          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          onClick={scrollToTop}
           aria-label="Back to top"
           style={{
             display: "flex", alignItems: "baseline", gap: ".55rem",

@@ -118,7 +118,25 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html
       lang="en"
       className={`${inter.variable} ${interTight.variable} ${mono.variable}`}
+      /* The inline script below sets data-anim before React hydrates, which
+         React 19 would otherwise report as a mismatch. */
+      suppressHydrationWarning
     >
+      <head>
+        {/* Runs before first paint. Marks the document animatable only when
+            JS is live and motion is allowed, so CSS can pre-hide split words
+            without ever hiding them from a reader who has JS off. The timer
+            clears the flag if the animation layer never reports ready, so a
+            script failure degrades to plain visible text. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "try{if(matchMedia('(prefers-reduced-motion: no-preference)').matches){" +
+              "var d=document.documentElement;d.dataset.anim='on';" +
+              "setTimeout(function(){if(!window.__animReady){delete d.dataset.anim;d.querySelectorAll('[data-word]').forEach(function(w){w.style.opacity=''});}},2500);}}catch(e){}",
+          }}
+        />
+      </head>
       <body>{children}</body>
     </html>
   );

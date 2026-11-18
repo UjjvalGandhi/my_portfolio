@@ -1,6 +1,7 @@
 "use client";
 import { motion, type Variants } from "framer-motion";
 import type { ReactNode, CSSProperties } from "react";
+import SplitWords from "./anim/SplitWords";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -93,8 +94,11 @@ export function SectionHeading({
             maxWidth: "20ch",
           }}
         >
-          {title}
-          {accentWord && <> <span style={{ color: "var(--accent)" }}>{accentWord}</span></>}
+          <SplitWords
+            text={title}
+            highlight={accentWord}
+            highlightStyle={{ color: "var(--accent)" }}
+          />
         </h2>
       </Reveal>
 

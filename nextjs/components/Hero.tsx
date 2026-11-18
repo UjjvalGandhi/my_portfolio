@@ -1,8 +1,11 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { profile } from "@/lib/data";
 import { Button } from "./ui";
+import { scrollToSection } from "@/lib/scroll";
+import SplitWords from "./anim/SplitWords";
+import { initGsap } from "@/lib/gsap";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -48,6 +51,42 @@ function useTypewriter(enabled: boolean) {
 export default function Hero() {
   const reduce = useReducedMotion();
   const { text, done, index } = useTypewriter(!reduce);
+  const svgRef = useRef<SVGSVGElement>(null);
+
+  /* The platform targets start dim and light up in sequence as the hero
+     scrolls away — the diagram reads as a pipeline running, rather than a
+     static picture. They begin visible, so arriving at the page never shows
+     an empty panel. */
+  useLayoutEffect(() => {
+    if (reduce) return;
+    const el = svgRef.current;
+    if (!el) return;
+
+    const { gsap } = initGsap();
+    const targets = el.querySelectorAll("[data-target]");
+    if (!targets.length) return;
+
+    const ctx = gsap.context(() => {
+      gsap.set(targets, { opacity: 0.5 });
+      gsap.to(targets, {
+        opacity: 1,
+        ease: "none",
+        stagger: 0.4,
+        scrollTrigger: {
+          trigger: el,
+          /* Starts at the top of the panel rather than a percentage: the
+             panel is already on screen at load, so a percentage start would
+             begin part-way through and leave the initial state depending on
+             viewport height. */
+          start: "top top",
+          end: "bottom top",
+          scrub: 0.5,
+        },
+      });
+    }, el);
+
+    return () => ctx.revert();
+  }, [reduce]);
 
   const fade = (d: number) => ({
     initial: { opacity: 0, y: 16 },
@@ -78,9 +117,13 @@ export default function Hero() {
             className="display"
             style={{ fontSize: "clamp(2.9rem, 6.2vw, 7.2rem)", marginBottom: "1.75rem" }}
           >
-            Full stack developer
-            <br />
-            building for <span style={{ color: "var(--accent)" }}>every platform</span>.
+            <SplitWords
+              text="Full stack developer building for"
+              highlight="every platform."
+              highlightStyle={{ color: "var(--accent)" }}
+              start="top 95%"
+              stagger={0.045}
+            />
           </motion.h1>
 
           <motion.div
@@ -118,7 +161,7 @@ export default function Hero() {
           >
             <Button
               variant="solid"
-              onClick={() => document.getElementById("work")?.scrollIntoView({ behavior: "smooth" })}
+              onClick={() => scrollToSection("work")}
             >
               Selected work
             </Button>
@@ -168,6 +211,7 @@ export default function Hero() {
 
           <div style={{ padding: "1.1rem .6rem" }}>
             <svg
+              ref={svgRef}
               viewBox="0 0 440 210"
               style={{ width: "100%", height: "auto", display: "block" }}
               role="img"
@@ -210,7 +254,7 @@ export default function Hero() {
               {TARGETS.map((t, i) => {
                 const yc = 26 + i * 52;
                 return (
-                  <g key={t.label}>
+                  <g key={t.label} data-target>
                     <rect x="268" y={yc - 17} width="162" height="34" fill="#FFFFFF" stroke="#E4E4E7" strokeWidth="1" />
                     <rect x="268" y={yc - 17} width="3" height="34" fill="#2563EB" />
                     <text x="284" y={yc + 4} fill="#0A0A0A" style={{ font: "500 12px var(--font-inter), sans-serif" }}>

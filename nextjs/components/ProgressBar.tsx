@@ -1,5 +1,6 @@
 "use client";
 import { useEffect } from "react";
+import { getLenis } from "@/lib/scroll";
 
 export default function ProgressBar() {
   useEffect(() => {
@@ -18,9 +19,14 @@ export default function ProgressBar() {
     };
 
     update();
+    /* Lenis emits its own scroll event every frame it animates; the native
+       one still fires too, so this is belt and braces rather than either/or. */
+    const lenis = getLenis();
+    lenis?.on("scroll", update);
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll, { passive: true });
     return () => {
+      lenis?.off("scroll", update);
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
       if (raf) cancelAnimationFrame(raf);

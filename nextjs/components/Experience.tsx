@@ -1,22 +1,59 @@
 "use client";
+import { useLayoutEffect, useRef } from "react";
 import { motion } from "framer-motion";
+import { initGsap } from "@/lib/gsap";
+import { NAV_OFFSET } from "@/lib/scroll";
 import { jobs, education, type Job } from "@/lib/data";
 import { SectionHeading, Tag, Reveal } from "./ui";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
 function JobBlock({ job, index }: { job: Job; index: number }) {
+  const rowRef = useRef<HTMLDivElement>(null);
+  const metaRef = useRef<HTMLDivElement>(null);
+
+  /* Keep the dates and status visible while the responsibilities scroll.
+
+     ScrollTrigger pins with position: fixed, and a transformed ancestor
+     would become the containing block and break it — so this row reveals
+     with opacity only (no y), unlike the other sections. pinSpacing stays
+     off so nothing reflows, and the pin is desktop-only: on one column the
+     meta sits directly above its own text and pinning it would just cover
+     the content. */
+  useLayoutEffect(() => {
+    const row = rowRef.current;
+    const meta = metaRef.current;
+    if (!row || !meta) return;
+
+    const { gsap, ScrollTrigger } = initGsap();
+    const mm = gsap.matchMedia();
+
+    mm.add("(min-width: 1150px) and (prefers-reduced-motion: no-preference)", () => {
+      const st = ScrollTrigger.create({
+        trigger: row,
+        start: `top ${NAV_OFFSET + 40}px`,
+        end: `bottom ${NAV_OFFSET + 40}px`,
+        pin: meta,
+        pinSpacing: false,
+      });
+      return () => st.kill();
+    });
+
+    return () => mm.revert();
+  }, []);
+
   return (
     <motion.article
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      ref={rowRef}
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
       viewport={{ once: true, margin: "-70px" }}
       transition={{ duration: 0.6, delay: index * 0.08, ease: EASE }}
       className="exp-row"
       style={{ padding: "2.5rem 0", borderTop: "1px solid var(--line)" }}
     >
       {/* meta column */}
-      <div>
+      <div ref={metaRef}>
         <div className="mono" style={{ fontSize: ".74rem", color: "var(--ink)", marginBottom: ".6rem" }}>
           {job.period}
         </div>

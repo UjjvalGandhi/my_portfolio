@@ -1,5 +1,6 @@
 "use client";
 import { profile } from "@/lib/data";
+import { scrollToTop } from "@/lib/scroll";
 
 const year = new Date().getFullYear();
 
@@ -49,7 +50,7 @@ export default function Footer() {
         </div>
 
         <button
-          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          onClick={scrollToTop}
           className="label"
           style={{
             background: "none",
