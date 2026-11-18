@@ -1,25 +1,49 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Inter_Tight, JetBrains_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 
-const inter = Inter({
-  subsets: ["latin"],
+/* Self-hosted rather than next/font/google.
+
+   next/font/google downloads from fonts.googleapis.com at BUILD time. When
+   one of those requests fails, Turbopack surfaces it as a confusing
+   "Module not found: @vercel/turbopack-next/internal/font/google/font"
+   rather than a network error, and the build fails. It is intermittent, it
+   hit roughly one build in three here, and Vercel builds cold every time —
+   so it was a coin flip on every deploy.
+
+   These are the same families as variable fonts, latin subset, so builds
+   are now deterministic and offline-capable. 132 KB for all three, less
+   than the static instances Google was serving for the weights in use.
+   See app/fonts/README.md for provenance and re-download steps. */
+
+const inter = localFont({
+  src: "./fonts/inter-latin-var.woff2",
+  weight: "100 900",
+  style: "normal",
   variable: "--font-inter",
   display: "swap",
+  fallback: ["system-ui", "-apple-system", "Segoe UI", "Roboto", "Arial", "sans-serif"],
 });
 
-const interTight = Inter_Tight({
-  subsets: ["latin"],
-  weight: ["500", "600", "700", "800"],
+const interTight = localFont({
+  src: "./fonts/inter-tight-latin-var.woff2",
+  weight: "100 900",
+  style: "normal",
   variable: "--font-display",
   display: "swap",
+  fallback: ["system-ui", "-apple-system", "Segoe UI", "Roboto", "Arial", "sans-serif"],
 });
 
-const mono = JetBrains_Mono({
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
+const mono = localFont({
+  src: "./fonts/jetbrains-mono-latin-var.woff2",
+  weight: "100 800",
+  style: "normal",
   variable: "--font-mono",
   display: "swap",
+  /* Arial metrics would be wrong for a monospace face, so the automatic
+     fallback adjustment is off and a mono stack is given instead. */
+  adjustFontFallback: false,
+  fallback: ["ui-monospace", "SFMono-Regular", "Menlo", "Consolas", "monospace"],
 });
 
 const BASE_URL = "https://ujjvalgandhi.online";
