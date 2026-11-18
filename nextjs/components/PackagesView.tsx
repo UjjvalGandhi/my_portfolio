@@ -137,7 +137,7 @@ function PackageCard({ pkg, index }: { pkg: PubPackage; index: number }) {
           className="mono"
           aria-label={`Copy install command for ${pkg.name}`}
           style={{
-            width: "100%", display: "flex", alignItems: "center", gap: ".6rem",
+            width: "100%", display: "flex", alignItems: "flex-start", gap: ".6rem",
             padding: ".7rem .8rem", marginBottom: "1.1rem",
             background: "var(--bg-alt)", border: "1px solid var(--line)",
             color: "var(--ink-2)", fontSize: ".72rem", textAlign: "left",
@@ -145,7 +145,7 @@ function PackageCard({ pkg, index }: { pkg: PubPackage; index: number }) {
           }}
         >
           <span style={{ color: "var(--ink-3)", flexShrink: 0 }}>$</span>
-          <span style={{ flex: 1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{install}</span>
+          <span className="install-cmd">{install}</span>
           <span
             className="label"
             style={{ flexShrink: 0, fontSize: ".54rem", color: copied ? "var(--accent)" : "var(--ink-3)" }}

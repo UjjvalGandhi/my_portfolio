@@ -101,6 +101,7 @@ export default function Hero() {
         <div>
           <motion.div
             {...fade(0)}
+            className="hero-status"
             style={{
               display: "flex", alignItems: "center", gap: ".6rem",
               paddingBottom: "1.1rem", marginBottom: "2.2rem",

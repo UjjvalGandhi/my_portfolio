@@ -388,3 +388,56 @@ html[data-anim="on"] [data-word] { opacity: 0; }
 @media (prefers-reduced-motion: reduce) {
   html[data-anim="on"] [data-word] { opacity: 1; }
 }
+
+/* ──────────────────────────────────────────────────────────────
+   INSTALL COMMAND
+   A flex item defaults to min-width: auto, so this span would not
+   shrink below its own text and text-overflow never engaged — the
+   card could not go narrower than 455px and pushed the whole page
+   into horizontal scroll on a phone. min-width: 0 lets it shrink.
+
+   On a phone the command wraps rather than truncating: it is there
+   to be read as well as copied, and an ellipsis hides the package
+   name, which is the part that matters.
+   ────────────────────────────────────────────────────────────── */
+.install-cmd {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (max-width: 640px) {
+  .install-cmd {
+    white-space: normal;
+    overflow-wrap: anywhere;
+    text-overflow: clip;
+    line-height: 1.5;
+  }
+}
+
+/* ──────────────────────────────────────────────────────────────
+   NAVBAR AT PHONE WIDTH
+   Name + /dev + CTA + burger together needed about 300px of the
+   320 available at 360px, so the wordmark wrapped onto two lines.
+   The name is the brand and stays; the suffix goes and the rest
+   tightens.
+   ────────────────────────────────────────────────────────────── */
+.nav-name { font-size: 1.1rem; white-space: nowrap; }
+.nav-cta  { padding: .6rem 1.1rem; font-size: .78rem; }
+
+@media (max-width: 640px) {
+  .nav-name   { font-size: .98rem; }
+  .nav-suffix { display: none; }
+  .nav-cta    { padding: .55rem .8rem; font-size: .72rem; }
+}
+
+/* Hero status bar: the two tracked-out labels together need about 300px,
+   so at phone width they each wrapped onto a second line. Stack them
+   instead, one line apiece. */
+@media (max-width: 640px) {
+  .hero-status { flex-wrap: wrap; gap: .4rem .6rem; }
+  .hero-status .label { white-space: nowrap; }
+  .hero-status > .label:last-child { margin-left: 0 !important; }
+}

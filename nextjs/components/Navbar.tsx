@@ -88,10 +88,10 @@ export default function Navbar() {
             background: "none", border: "none", padding: 0, cursor: "pointer",
           }}
         >
-          <span className="display" style={{ fontSize: "1.1rem", letterSpacing: "-.045em", color: "var(--ink)" }}>
+          <span className="display nav-name" style={{ letterSpacing: "-.045em", color: "var(--ink)" }}>
             Ujjawal Gandhi
           </span>
-          <span className="mono" style={{ fontSize: ".66rem", color: "var(--ink-3)" }}>
+          <span className="mono nav-suffix" style={{ fontSize: ".66rem", color: "var(--ink-3)" }}>
             /dev
           </span>
         </button>
@@ -149,7 +149,7 @@ export default function Navbar() {
         </nav>
 
         <div style={{ display: "flex", alignItems: "center", gap: ".6rem" }}>
-          <a className="btn btn--solid" href={`mailto:${profile.email}`} style={{ padding: ".6rem 1.1rem", fontSize: ".78rem" }}>
+          <a className="btn btn--solid nav-cta" href={`mailto:${profile.email}`}>
             Get in touch
           </a>
 
